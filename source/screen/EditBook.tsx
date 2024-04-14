@@ -14,20 +14,22 @@ import {
 import CardBook from './cardbook'; 
 import Header from './header'
 import Comment from './comment';
-function DetailBook(): React.JSX.Element {
+function EditBook(): React.JSX.Element {
 
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
         <Header/>
         <View style={selfstyle.container}>
-            <View style={selfstyle.box_title}><Text style={selfstyle.title}>Thông tin sách</Text></View>
+            <View style={selfstyle.box_title}><Text style={selfstyle.title}>Thêm sách</Text></View>
             <View style={selfstyle.box_info}>
-                <Text style={selfstyle.name_book}>The Elements of Typographic Style</Text>
+            <View style={selfstyle.box_content}>
+                    <Text style={selfstyle.label}>Tên:</Text>
+                    <Text style={selfstyle.text_content}>Robert Bringhurst</Text>
+                </View>
                 <View style={selfstyle.box_category}>
+                    <Text style={[selfstyle.label, {alignSelf: 'center'}]}>Thể Loại: </Text>
                     <View style={selfstyle.category}><Text style={selfstyle.text_category}>Khoa học</Text></View>
-                    <View style={selfstyle.category}><Text style={selfstyle.text_category}>Thiết kế đồ họa</Text></View>
-                    <View style={selfstyle.category}><Text style={selfstyle.text_category}>Văn phòng</Text></View>
-                    <View style={selfstyle.category}><Text style={selfstyle.text_category}>Đời sống xã hội</Text></View>
+                    <TouchableOpacity style={selfstyle.category}><Text style={selfstyle.text_category}>+</Text></TouchableOpacity>  
                 </View>
                 <View style={selfstyle.box_content}>
                     <Text style={selfstyle.label}>Tác giả:</Text>
@@ -37,32 +39,14 @@ function DetailBook(): React.JSX.Element {
                     <Text style={selfstyle.label}>Quốc Gia:</Text>
                     <Text style={selfstyle.text_content}>Cannada</Text>
                 </View>
-                <View style={selfstyle.box_feedback}>
-                    <View style={selfstyle.box_icon}>
-                        <ImageBackground style={selfstyle.imgicon} source={require('../Image/heart.png')}/>
-                        <Text style={selfstyle.text_content}>32</Text>
-                    </View>
-                    <View style={selfstyle.box_icon}>
-                        <ImageBackground style={selfstyle.imgicon} source={require('../Image/star.png')}/>
-                        <Text style={selfstyle.text_content}>4.5</Text>
-                    </View>
-                    <View style={selfstyle.box_icon}>
-                        <ImageBackground style={selfstyle.imgicon} source={require('../Image/comment.png')}/>
-                        <Text style={selfstyle.text_content}>12</Text>
-                    </View>
-                </View>
+                
             </View>
             <View style={selfstyle.box_title}><Text style={selfstyle.title}>Mô tả</Text></View>
             <Text style={[selfstyle.describe, selfstyle.text_content]}>Được dịch từ tiếng Anh-The Elements of Typographic Style là 
             một cuốn sách về kiểu chữ và phong cách của nhà sắp chữ, nhà thơ và dịch giả người Canada Robert Bringhurst.
             Được xuất bản lần đầu vào năm 1992 bởi Nhà xuất bản Hartley & Marks, nó đã được sửa đổi vào các năm 1996, 2001, 
             2002, 2004, 2005, 2008 và 2012.</Text>
-            <View style={selfstyle.box_title}><Text style={selfstyle.title}>Bình luận</Text></View>
-            <View style={selfstyle.box_comment}>
-                <Comment user='Phan Minh Quân' star={5} content='Một cuốn sách rất hay và bổ ích'></Comment>
-                <Comment user='Nguyễn Bảo Quốc' star={4} content='VCl'></Comment>
-                <Comment user='Thái Thanh Hưng' star={4.5} content='phong cách của nhà sắp chữ, nhà thơ và dịch giả người Canada Robert Bringhurst'></Comment>
-            </View>
+            
         </View>
     </ScrollView>
   );
@@ -101,6 +85,7 @@ const selfstyle = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         paddingVertical: 5,
+        paddingHorizontal: 10,
     },
     category: {
         width: 'auto',
@@ -119,6 +104,7 @@ const selfstyle = StyleSheet.create({
     box_content: {
         flexDirection: 'row',
         padding: 10,
+        marginVertical: 10,
     },
     label: {
         width: 100,
@@ -150,4 +136,4 @@ const selfstyle = StyleSheet.create({
 
     }
 })
-export default DetailBook;
+export default EditBook;

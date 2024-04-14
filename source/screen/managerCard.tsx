@@ -14,9 +14,9 @@ type StockBook = {
     indexcard: number;
 }
 
-function CardBook({title, category, describe, indexcard}: StockBook): React.JSX.Element {
+function managerCard({title, category, describe, indexcard}: StockBook): React.JSX.Element {
   return (
-    <TouchableOpacity style={[styles.container,indexcard%2 === 0?styles.container_color1:styles.container_color2 ]}>
+    <View style={[styles.container,indexcard%2 === 0?styles.container_color1:styles.container_color2 ]}>
         <View style={[styles.box_img,indexcard%2 === 0?styles.box_img_color1:styles.box_img_color2]}>
             <ImageBackground style={styles.img} source={require('../Image/book.png')}/>
         </View>
@@ -31,7 +31,15 @@ function CardBook({title, category, describe, indexcard}: StockBook): React.JSX.
                 <Text style={styles.text_describe}>{describe}</Text>
             </View>
         </View>
-    </TouchableOpacity>
+        <View style={[styles.box_button,indexcard%2 === 0?styles.boxbutton_color1:styles.boxbutton_color2]}>
+            <TouchableOpacity style={styles.button}>
+                <ImageBackground style={styles.img_button} source={require('../Image/edit.png')}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>
+                <ImageBackground style={styles.img_button} source={require('../Image/hidden.png')}/>
+            </TouchableOpacity>
+        </View>
+    </View>
   );
 }
 
@@ -40,7 +48,7 @@ const styles = StyleSheet.create({
         width: '90%',
         height: 120,
         alignSelf: 'center',
-        borderRadius: 30,
+        borderRadius: 10,
         flexDirection: 'row',
         marginVertical: 10,
     },
@@ -51,9 +59,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(103,224,147,0.2)',
     },
     box_img: {
-        width: '32%',
+        width: '30%',
         height: 120,
-        borderRadius: 30,
+        borderRadius: 10,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -68,7 +76,7 @@ const styles = StyleSheet.create({
         height: '80%',
     },
     box_content: {
-        width: '68%',
+        width: '60%',
         padding: 5,
     },
     title: {
@@ -96,7 +104,29 @@ const styles = StyleSheet.create({
     text_describe: {
         fontSize: 10,
         color: 'black'
+    },
+    box_button: {
+        width: '10%',
+        borderRadius: 10,
+        justifyContent: 'center'
+    },
+    boxbutton_color1:{
+        backgroundColor: 'rgba(6,175,170,0.3)',
+    },
+    boxbutton_color2:{
+        backgroundColor: 'rgba(103,224,147,0.3)',
+    },
+    button: {
+        width: '100%',
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    img_button: {
+        width: '80%',
+        height: '80%',
+        marginStart: 5,
     }
 });
 
-export default CardBook;
+export default managerCard;

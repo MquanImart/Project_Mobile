@@ -11,58 +11,50 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import CardBook from './cardbook'; 
-function Home(): React.JSX.Element {
+import FavoriteCard from './favorite_card'; 
+function FavoriteBook(): React.JSX.Element {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <Text style={selfstyle.title}>Sách Yêu Thích</Text>
         <View style={selfstyle.box_search}>
             <TouchableOpacity style={[selfstyle.icon_search]}>
                 <ImageBackground style={selfstyle.img_icon} source={require('../Image/find.png')}/>
             </TouchableOpacity>
             <TextInput style={selfstyle.input_search}
                 placeholder='Tên sách' placeholderTextColor='#A6A6A6'></TextInput>
-            <TouchableOpacity style={selfstyle.icon_search}>
-                <ImageBackground style={selfstyle.img_icon} source={require('../Image/camera.png')}/>
-            </TouchableOpacity>
-        </View>
-        <View style={selfstyle.box_propose}>
-            <TouchableOpacity><Text style={[selfstyle.text_propose, {color: '#06AFAA'}]}>Đề xuất</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={selfstyle.text_propose}>Hot</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={selfstyle.text_propose}>Đã xem</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={selfstyle.text_propose}>Yêu Thích</Text></TouchableOpacity>
         </View>
         <ScrollView style={selfstyle.list_book}>
-            <CardBook title='The Elements of Typographic Style' 
+            <FavoriteCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={1} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
+            </FavoriteCard>
+            <FavoriteCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={2} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
+            </FavoriteCard>
+            <FavoriteCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={3} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
+            </FavoriteCard>
+            <FavoriteCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={4} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
+            </FavoriteCard>
+            <FavoriteCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={3} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
+            </FavoriteCard>
+            <FavoriteCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={4} >
-            </CardBook>
+            </FavoriteCard>
         </ScrollView>
     </View>
   );
@@ -89,9 +81,10 @@ const selfstyle = StyleSheet.create({
         justifyContent: 'center',
     },
     title: {
-        fontSize: 35,
+        fontSize: 25,
         fontWeight: '900',
         paddingHorizontal: 10,
+        color: '#06AFAA'
     },
     box_search: {
         width: '90%',height: 50,
@@ -127,4 +120,4 @@ const selfstyle = StyleSheet.create({
 
     }
 })
-export default Home;
+export default FavoriteBook;

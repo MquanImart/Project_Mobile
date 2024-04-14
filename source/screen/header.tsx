@@ -11,7 +11,7 @@ function Header(): React.JSX.Element {
   return (
     <View style={[selfstyle.self_header]}>
         <TouchableOpacity style={selfstyle.button_icon}>
-            <ImageBackground style={selfstyle.img_icon} source={require('./source/Image/back.png')}/>
+            <ImageBackground style={selfstyle.img_icon} source={require('../Image/back.png')}/>
         </TouchableOpacity>
         <View style={selfstyle.box_title}>
             <Text style={[selfstyle.title, {color: '#06AFAA'}]}>FIND</Text>

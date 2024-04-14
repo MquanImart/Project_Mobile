@@ -15,6 +15,8 @@ import {
 } from 'react-native';
 import CardBook from './cardbook'; 
 
+
+
 const data = [
     { label: 'Item 1', value: '1' },
     { label: 'Item 2', value: '2' },
@@ -28,14 +30,12 @@ const data = [
 
 function Advanced_search(): React.JSX.Element {
 
-    const [valuecategory, setValuecategory] = useState(null);
+    const [valuecategory, setValuecategory] = useState<string | null>(null);
     const [isFocuscategory, setIsFocuscategory] = useState(false);
 
-    const [valuecounttry, setValuecounttry] = useState(null);
+    const [valuecounttry, setValuecounttry] = useState<string | null>(null);
     const [isFocuscounttry, setIsFocuscounttry] = useState(false);
 
-    const [valueyear, setValueyear] = useState(null);
-    const [isFocusyear, setIsFocusyear] = useState(false);
   
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -45,7 +45,7 @@ function Advanced_search(): React.JSX.Element {
                 <TextInput style={selfstyle.input_search}
                     placeholder='Tên sách' placeholderTextColor='#A6A6A6'></TextInput>
                 <TouchableOpacity style={selfstyle.icon_search}>
-                    <ImageBackground style={selfstyle.img_icon} source={require('./source/Image/camera.png')}/>
+                    <ImageBackground style={selfstyle.img_icon} source={require('../Image/camera.png')}/>
                 </TouchableOpacity>
             </View>
             <View style={selfstyle.box_selected}>

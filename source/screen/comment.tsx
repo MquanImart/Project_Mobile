@@ -20,7 +20,7 @@ function Comment({user, star, content}: StockComment): React.JSX.Element {
             <Text style={selfstyle.text_user}>{user}</Text>
             <View style={selfstyle.flex_row}>
                 <Text style={selfstyle.text}>{star}</Text>
-                <ImageBackground style={selfstyle.imgicon} source={require('./source/Image/star.png')}/>
+                <ImageBackground style={selfstyle.imgicon} source={require('../Image/star.png')}/>
             </View>
         </View>
         <View>

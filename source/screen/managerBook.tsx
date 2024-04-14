@@ -11,104 +11,68 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import CardBook from './cardbook'; 
-function Home(): React.JSX.Element {
+import ManagerCard from './managerCard'; 
+function ManagerBook(): React.JSX.Element {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <View style={selfstyle.box_search}>
-            <TouchableOpacity style={[selfstyle.icon_search]}>
-                <ImageBackground style={selfstyle.img_icon} source={require('../Image/find.png')}/>
+        <View style={selfstyle.header}>
+            <Text style={selfstyle.title}>Quản Lý Sách</Text>
+            <TouchableOpacity style={selfstyle.button}>
+                <Text style={selfstyle.text_button}>Thêm Sách</Text>
             </TouchableOpacity>
-            <TextInput style={selfstyle.input_search}
-                placeholder='Tên sách' placeholderTextColor='#A6A6A6'></TextInput>
-            <TouchableOpacity style={selfstyle.icon_search}>
-                <ImageBackground style={selfstyle.img_icon} source={require('../Image/camera.png')}/>
-            </TouchableOpacity>
-        </View>
-        <View style={selfstyle.box_propose}>
-            <TouchableOpacity><Text style={[selfstyle.text_propose, {color: '#06AFAA'}]}>Đề xuất</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={selfstyle.text_propose}>Hot</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={selfstyle.text_propose}>Đã xem</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={selfstyle.text_propose}>Yêu Thích</Text></TouchableOpacity>
         </View>
         <ScrollView style={selfstyle.list_book}>
-            <CardBook title='The Elements of Typographic Style' 
+            <ManagerCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={1} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
+            </ManagerCard>
+            <ManagerCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={2} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
+            </ManagerCard>
+            <ManagerCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={3} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
+            </ManagerCard>
+            <ManagerCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={4} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
+            </ManagerCard>
+            <ManagerCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={3} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
+            </ManagerCard>
+            <ManagerCard title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={4} >
-            </CardBook>
+            </ManagerCard>
         </ScrollView>
     </View>
   );
 }
 const selfstyle = StyleSheet.create({
-    self_header: {
-        width: '100%',
+    header: {
+        width: '90%',
         height: 70,
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         alignItems: 'center',
-    },
-    button_icon: {
-        width: 40,
-        height: '55%',
-    },
-    img_icon: {
-        width: '100%',
-        height: '100%'
-    },
-    box_title: {
-        width: '50%',
-        flexDirection: 'row',
-        justifyContent: 'center',
+        alignSelf: 'center',
+        borderBottomColor: '#06AFAA',
+        borderBottomWidth: 0.5,
     },
     title: {
-        fontSize: 35,
+        fontSize: 25,
         fontWeight: '900',
         paddingHorizontal: 10,
-    },
-    box_search: {
-        width: '90%',height: 50,
-        marginVertical: 10,
-        backgroundColor: '#EBEDEF',
-        borderRadius: 50,
-        alignSelf: 'center',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    icon_search: {
-        width: 30,
-        height: '50%'
-    },
-    input_search: {
-        width: '60%',
+        color: '#06AFAA'
     },
     box_propose: {
         width:'90%', height: 50,
@@ -124,7 +88,12 @@ const selfstyle = StyleSheet.create({
     },
     list_book: {
         width: '100%',
+    },
+    button: {
 
+    },
+    text_button: {
+        color: '#06AFAA'
     }
 })
-export default Home;
+export default ManagerBook;

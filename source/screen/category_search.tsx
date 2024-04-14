@@ -12,11 +12,17 @@ import {
 } from 'react-native';
 import CardBook from './cardbook'; 
 import dropstyle from './dropdown';
+
+type Data = {
+    label: string;
+    value: string;
+}
+
 function categorySearch(): React.JSX.Element {
-    const [valuecategory, setValuecategory] = useState(null);
+    const [valuecategory, setValuecategory] = useState<string | null>(null);
     const [isFocuscategory, setIsFocuscategory] = useState(false);
 
-    const data = [
+    const data:Data[] = [
         { label: 'Khoa Học', value: '1' },
         { label: 'Xã Hội', value: '2' },
         { label: 'Đời sống', value: '3' },
