@@ -2,7 +2,8 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     logo: {
-        flex: 1,
+        width: '100%',
+        height: 270,
         justifyContent: 'center',
         alignItems:'center',
     },
@@ -18,7 +19,8 @@ const styles = StyleSheet.create({
         fontWeight: '900'
     },
     container: {
-        flex: 2,
+        width: '100%',
+        height: 526,
     },
     box_item: {
         flex: 1,
@@ -82,6 +84,10 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         fontSize: 17,
     },
+    resgister: {
+        width: '100%',
+        height: 796,
+    }
 });
 
 export default styles;

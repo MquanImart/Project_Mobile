@@ -22,7 +22,7 @@ function Resgister(): React.JSX.Element {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView style={{flex: 1}} behavior='padding'>
           <LinearGradient
-            style={styles.container}
+            style={styles.resgister}
             colors={['#06AFAA', '#67E093']}
             start={{ x: 1, y: 1 }}
             end={{ x: 1, y: 0 }}>
