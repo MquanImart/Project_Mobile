@@ -18,7 +18,7 @@ type Data = {
     value: string;
 }
 
-function categorySearch(): React.JSX.Element {
+function CategorySearch(): React.JSX.Element {
     const [valuecategory, setValuecategory] = useState<string | null>(null);
     const [isFocuscategory, setIsFocuscategory] = useState(false);
 
@@ -125,4 +125,4 @@ const selfstyle = StyleSheet.create({
         color: "#06AFAA"
       },
 })
-export default categorySearch;
+export default CategorySearch;

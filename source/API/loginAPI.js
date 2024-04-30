@@ -1,12 +1,6 @@
 export const serverAPI = 'http://192.168.1.9:3000/';
-export const postLogin = async (username, password) => {
+const postAPI = async (url, data) => {
     try {
-        const url = serverAPI + 'login';
-        const data = {
-            username: username,
-            password: password
-        };
-
         const response = await fetch(url, {
             method: 'POST',
             headers: {
@@ -21,23 +15,25 @@ export const postLogin = async (username, password) => {
           console.error(error);
         }
   };
+export const postLogin = async (username, password) => {
+    try {
+        const url = serverAPI + 'login';
+        const data = {
+            username: username,
+            password: password
+        };
+            return postAPI(url, data);       
+        } catch (error) {
+        console.error(error);
+        }
+  };
   export const postSendEmail = async (username) => {
     try {
         const url = serverAPI + 'login/sendcode';
         const data = {
             username: username
         };
-
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
-        const json = await response.json();
-            return json === true;
+        return postAPI(url, data);
         } catch (error) {
           console.error(error);
         }
@@ -49,17 +45,7 @@ export const postLogin = async (username, password) => {
             username: username,
             userotp: userotp
         };
-
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
-        const json = await response.json();
-            return json === true;
+        return postAPI(url, data);
         } catch (error) {
           console.error(error);
         }
@@ -71,18 +57,35 @@ export const postLogin = async (username, password) => {
             password: password,
             enterpass: enterpass
         };
-
-        const response = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-
-        const json = await response.json();
-            return json === true;
+        return postAPI(url, data);
         } catch (error) {
           console.error(error);
         }
+  };
+  export const postResgister = async (name, email, phone, dob, gender, username, password, enterpass, role_id) => {
+    try {
+        const url = serverAPI + 'login/resgister';
+        const data = {
+            name: name,
+            email: email,
+            phone: phone,
+            dob: dob,
+            gender: gender !== null ? parseInt(gender, 10) : null,
+            username: username,
+            password: password,
+            enterpass: enterpass,
+            role_id: role_id !== null ? parseInt(role_id, 10) : null
+        };
+        if(await postAPI(url, data)){
+          try {
+            await AsyncStorage.setItem('@username', username);
+          } catch (error) {
+            console.error(error);
+          }
+          return true;
+          };
+        } catch (error) {
+          console.error(error);
+        }
+        return false;
   };

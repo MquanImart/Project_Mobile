@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './styles_login';
 import {
     StyleSheet,
@@ -7,59 +7,42 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-function chooseInterests(): React.JSX.Element {
+import { getAllGenre } from '../API/genreAPI';
+import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
+
+type Genre = {
+    id: number;
+    genre_name: string;
+}
+
+function ChooseInterests(): React.JSX.Element {
+    const [listgenre, setlistgenre] = useState<Genre[]>([]);
+    const handlePress = () =>{
+
+    }
+    useEffect(() => {
+        getAllGenre().then(genre => {
+            setlistgenre(genre);
+        });
+    }, []);
 
   return (
     <View style={{flex: 1}}>
-        <View style={[selfstyles.box_item, {flex: 1}]}>
+        <View style={[selfstyles.box_item, {height: 140}]}>
             <Text style={selfstyles.title}>Hãy Chọn sở thích của bạn</Text>
             <Text style={selfstyles.describe}>Nhận các nội dung liên quan đến bạn</Text>
         </View>
-        <View style={[selfstyles.box_item, {flex: 5}]}>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Sách thiếu nhi</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Lịch sử</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Khoa học</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Văn hóa, xã hội</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Nấu ăn</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Giải trí</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Tôn giáo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Văn học</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Tâm lý, tình cảm</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Giáo dục</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Tiểu thuyết</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Khoa học viễn tưởng</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Thiên Văn</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={selfstyles.interest}>
-                <Text style={selfstyles.text_inter}>Đời sống</Text>
-            </TouchableOpacity>
-        </View>
-        <View style={[selfstyles.box_item, selfstyles.box_button, {flex: 1}]}>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <ScrollView style={[{height: 556}]}>
+              {listgenre.map((item, index) => (
+                <TouchableOpacity key={item.id} style={[selfstyles.interest, index%2==0?{alignSelf: 'flex-start'}: {alignSelf: 'flex-end'}]}
+                    onPress={handlePress}>
+                  <Text style={selfstyles.text_inter}>{item.genre_name}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+        </GestureHandlerRootView>
+        <View style={[selfstyles.box_item, selfstyles.box_button, {height: 100}]}>
             <TouchableOpacity style={[selfstyles.button, {backgroundColor: '#ccc'}]}>
                 <Text style={[styles.item_textcontent, {color: 'black'}]}>Bỏ Qua</Text>
             </TouchableOpacity>
@@ -88,7 +71,7 @@ const selfstyles = StyleSheet.create({
     },
     interest: {
         height: 50,
-        width: 'auto',
+        width: '80%',
         borderRadius: 40,
         borderWidth: 1,
         borderColor: '#000',
@@ -111,6 +94,7 @@ const selfstyles = StyleSheet.create({
     },
     box_button: {
         justifyContent: 'space-around'
-    }
+    },
+
 })
-export default chooseInterests;
+export default ChooseInterests;
