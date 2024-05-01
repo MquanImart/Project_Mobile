@@ -11,24 +11,31 @@ type StockBook = {
     title: string;
     category: string[];
     describe: string;
+    view: number;
     indexcard: number;
 }
 
-function CardBook({title, category, describe, indexcard}: StockBook): React.JSX.Element {
+function CardBook({title, category, describe,view, indexcard}: StockBook): React.JSX.Element {
   return (
     <TouchableOpacity style={[styles.container,indexcard%2 === 0?styles.container_color1:styles.container_color2 ]}>
         <View style={[styles.box_img,indexcard%2 === 0?styles.box_img_color1:styles.box_img_color2]}>
             <ImageBackground style={styles.img} source={require('../Image/book.png')}/>
         </View>
         <View style={styles.box_content}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}
+            numberOfLines={2} // Số dòng tối đa bạn muốn hiển thị
+            ellipsizeMode='tail'
+            >{title}</Text>
             <View style={styles.category}>
             {category.map((category, index) => (
                 <Text style={[styles.text_category, indexcard%2 === 0?styles.text_category_color1:styles.text_category_color2]} key={index}>{category}</Text>
             ))}
             </View>
             <View style={styles.box_describe}>
-                <Text style={styles.text_describe}>{describe}</Text>
+                <Text style={styles.text_describe}
+                numberOfLines={3} // Số dòng tối đa bạn muốn hiển thị
+                ellipsizeMode='tail' // Thêm dấu "..." ở cuối nếu văn bản quá dài
+                >{describe}</Text>
             </View>
         </View>
     </TouchableOpacity>
@@ -96,7 +103,7 @@ const styles = StyleSheet.create({
     text_describe: {
         fontSize: 10,
         color: 'black'
-    }
+    },
 });
 
 export default CardBook;
