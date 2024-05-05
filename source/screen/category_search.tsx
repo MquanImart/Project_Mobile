@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import CardBook from './cardbook'; 
 import dropstyle from './dropdown';
+import Header from './header';
 
 type Data = {
     label: string;
@@ -36,6 +37,7 @@ function CategorySearch(): React.JSX.Element {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <Header/>
         <View style={selfstyle.box_title}>
             <Text style={selfstyle.title_search}>Thể Loại</Text>
             <Dropdown
@@ -61,35 +63,35 @@ function CategorySearch(): React.JSX.Element {
                 />
         </View>
         <ScrollView style={selfstyle.list_book}>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={1} >
+            <CardBook title='The Elements of Typographic Style'
+              category={['Đồ họa', 'Văn phòng']}
+              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
+              indexcard={1} view={0} >
             </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={2} >
+            <CardBook title='The Elements of Typographic Style'
+              category={['Đồ họa', 'Văn phòng']}
+              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
+              indexcard={2} view={0} >
             </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={3} >
+            <CardBook title='The Elements of Typographic Style'
+              category={['Đồ họa', 'Văn phòng']}
+              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
+              indexcard={3} view={0} >
             </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={4} >
+            <CardBook title='The Elements of Typographic Style'
+              category={['Đồ họa', 'Văn phòng']}
+              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
+              indexcard={4} view={0} >
             </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={3} >
+            <CardBook title='The Elements of Typographic Style'
+              category={['Đồ họa', 'Văn phòng']}
+              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
+              indexcard={3} view={0} >
             </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={4} >
+            <CardBook title='The Elements of Typographic Style'
+              category={['Đồ họa', 'Văn phòng']}
+              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
+              indexcard={4} view={0} >
             </CardBook>
         </ScrollView>
     </View>

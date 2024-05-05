@@ -12,10 +12,12 @@ import {
   View,
 } from 'react-native';
 import ManagerCard from './managerCard'; 
+import Header from './header';
 function ManagerBook(): React.JSX.Element {
 
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <Header/>
         <View style={selfstyle.header}>
             <Text style={selfstyle.title}>Quản Lý Sách</Text>
             <TouchableOpacity style={selfstyle.button}>

@@ -58,7 +58,7 @@ function Resgister(): React.JSX.Element {
     const handleResgisterPress = () => {
         postResgister(name, email, phone, dob, valuegender, username, password, enterpass, valuerole).then(result => {
           if (result === true) {
-            navigation.navigate('ChooseInterests'); // Chuyển đến màn hình Home
+            navigation.navigate('ChooseInterests');
           } else {
             setusername("Sai mk");
           }

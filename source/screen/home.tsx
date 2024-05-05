@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import styles from './styles_login';
 import {
+    FlatList,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,10 +14,11 @@ import {
   View,
 } from 'react-native';
 import CardBook from './cardbook'; 
-import { getHistory, getHot, getPropose } from '../API/propose';
-
+import { getHistory, getHot, getLoveBook, getPropose } from '../API/propose';
+import { Header } from '@react-navigation/stack';
+import HeaderSelf from './header';
 type Typebook = {
-    [key: number]: number;
+    id: number;
     genre_id: number;
     title: string;
     author: string;
@@ -54,10 +57,13 @@ function Home(): React.JSX.Element {
     }
     const handleLovePress = () => {
         setfocus_propose(4);
-        
+        getLoveBook().then(listbook => {
+            setlistpropose(listbook);
+        });
     }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <HeaderSelf/>
         <View style={selfstyle.box_search}>
             <TouchableOpacity style={[selfstyle.icon_search]}>
                 <ImageBackground style={selfstyle.img_icon} source={require('../Image/find.png')}/>
@@ -81,7 +87,20 @@ function Home(): React.JSX.Element {
                 <Text style={[selfstyle.text_propose, focus_propose == 4?{color: '#06AFAA'}:{}]}>Yêu Thích</Text>
                 </TouchableOpacity>
         </View>
+        <SafeAreaView style={selfstyle.list_book}>
+            <FlatList
+              data={listpropose}
+              renderItem={({item, index}) => <CardBook title={item.title} 
+              category={[item.genre_name]} 
+              describe={item.describes}
+              view={item.view}
+              indexcard={index} />}
+              keyExtractor={(item) => item.id.toString()}
+            />
+        </SafeAreaView>
+
         <ScrollView style={selfstyle.list_book}>
+            {listpropose.length <= 0 && <Text style={selfstyle.textmsg}>Không tìm thấy sách</Text>}
             {listpropose.map((item, index) => (
                 <CardBook title={item.title} 
                 category={[item.genre_name]} 
@@ -152,6 +171,11 @@ const selfstyle = StyleSheet.create({
     list_book: {
         width: '100%',
 
+    },
+    textmsg: {
+        fontSize: 20,
+        fontWeight: '500',
+        alignSelf: 'center'
     }
 })
 export default Home;

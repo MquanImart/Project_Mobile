@@ -35,3 +35,15 @@ export const getPropose = async () => {
       console.error(error);
     }
   };
+  export const getLoveBook = async () => {
+    try {
+        const id_user = await getID();
+      const response = await fetch(
+        `${serverAPI}propose/love/${id_user}`,
+      );
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      console.error(error);
+    }
+  };

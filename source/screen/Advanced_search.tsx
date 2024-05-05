@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import styles from './styles_login';
-import dropstyle from './dropdown'
+import dropstyle from './dropdown';
+import Header from './header';
 import { Dropdown } from 'react-native-element-dropdown';
 import {
   ImageBackground,
@@ -33,15 +34,20 @@ function Advanced_search(): React.JSX.Element {
     const [valuecategory, setValuecategory] = useState<string | null>(null);
     const [isFocuscategory, setIsFocuscategory] = useState(false);
 
-    const [valuecounttry, setValuecounttry] = useState<string | null>(null);
-    const [isFocuscounttry, setIsFocuscounttry] = useState(false);
+    const [valueauthor, setValueauthor] = useState<string | null>(null);
+    const [isFocusauthor, setIsFocusauthor] = useState(false);
 
-  
+    const [valuesort, setValuesort] = useState<string | null>(null);
+    const [isFocussort, setIsFocussort] = useState(false);
+
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <Header/>
         <View style={{flex: 1}}>
-            <View style={selfstyle.box_search}>
-                
+            <View style={selfstyle.box_search}>  
+                <TouchableOpacity style={[selfstyle.icon_search]}>
+                    <ImageBackground style={selfstyle.img_icon} source={require('../Image/find.png')}/>
+                </TouchableOpacity>
                 <TextInput style={selfstyle.input_search}
                     placeholder='Tên sách' placeholderTextColor='#A6A6A6'></TextInput>
                 <TouchableOpacity style={selfstyle.icon_search}>
@@ -71,7 +77,7 @@ function Advanced_search(): React.JSX.Element {
                   }}
                 />
                 <Dropdown
-                  style={[dropstyle.dropdown, isFocuscounttry && { borderColor: 'blue' }]}
+                  style={[dropstyle.dropdown, isFocusauthor && { borderColor: 'blue' }]}
                   placeholderStyle={dropstyle.placeholderStyle}
                   selectedTextStyle={dropstyle.selectedTextStyle}
                   inputSearchStyle={dropstyle.inputSearchStyle}
@@ -81,23 +87,39 @@ function Advanced_search(): React.JSX.Element {
                   maxHeight={300}
                   labelField="label"
                   valueField="value"
-                  placeholder={!isFocuscounttry ? 'Quốc gia' : '...'}
+                  placeholder={!isFocusauthor ? 'Tác giả' : '...'}
                   searchPlaceholder="Search..."
-                  value={valuecounttry}
-                  onFocus={() => setIsFocuscounttry(true)}
-                  onBlur={() => setIsFocuscounttry(false)}
+                  value={valueauthor}
+                  onFocus={() => setIsFocusauthor(true)}
+                  onBlur={() => setIsFocusauthor(false)}
                   onChange={item => {
-                    setValuecounttry(item.value);
-                    setIsFocuscounttry(false);
+                    setValueauthor(item.value);
+                    setIsFocusauthor(false);
                   }}
                 />
             </View>
-            <View style={[selfstyle.box_search,selfstyle.box_author]}>
-                <View style={selfstyle.box_textauthor}><Text style={selfstyle.text_author}>Tác Giả: </Text></View>
-                <View style={selfstyle.box_textinput}>
-                    <TextInput style={selfstyle.search_textinput}
-                    placeholder='...'/>
-                </View>
+            <View style={[selfstyle.box_search]}>
+                <Dropdown
+                      style={[dropstyle.dropdown,{width:'90%'}, isFocussort && { borderColor: 'blue' }]}
+                      placeholderStyle={dropstyle.placeholderStyle}
+                      selectedTextStyle={dropstyle.selectedTextStyle}
+                      inputSearchStyle={dropstyle.inputSearchStyle}
+                      iconStyle={dropstyle.iconStyle}
+                      data={data}
+                      search
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+                      placeholder={!isFocussort ? 'Sắp xếp theo' : '...'}
+                      searchPlaceholder="Search..."
+                      value={valuesort}
+                      onFocus={() => setIsFocussort(true)}
+                      onBlur={() => setIsFocussort(false)}
+                      onChange={item => {
+                        setValuesort(item.value);
+                        setIsFocussort(false);
+                      }}
+                    />
             </View>
             <View style={selfstyle.box_button}>
                 <TouchableOpacity style={[selfstyle.box_search, {backgroundColor: '#06AFAA', width: '45%'}]}>
@@ -111,16 +133,19 @@ function Advanced_search(): React.JSX.Element {
             <CardBook title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
+                view={1}
                 indexcard={1} >
             </CardBook>
             <CardBook title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
+                view={1}
                 indexcard={2} >
             </CardBook>
             <CardBook title='The Elements of Typographic Style' 
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
+                view={1}
                 indexcard={3} >
             </CardBook>
         </ScrollView>

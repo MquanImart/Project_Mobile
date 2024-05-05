@@ -21,7 +21,7 @@ type SelectedGenresType = {
   };
 
 type RootStackParamList = {
-  'Home': undefined;
+  'HomeDrawer': undefined;
 };
 
 function ChooseInterests(): React.JSX.Element {
@@ -42,12 +42,12 @@ function ChooseInterests(): React.JSX.Element {
     }, []);
 
     const handlePassPress= () => {
-        navigation.navigate('Home');
+        navigation.navigate('HomeDrawer');
     }
     const handleGenrePress = () => {
         postGenre(selectedGenres).then(result => {
           if (result === true) {
-            navigation.navigate('Home');
+            navigation.navigate('HomeDrawer');
           } else {
           }
         })

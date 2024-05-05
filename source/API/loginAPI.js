@@ -1,4 +1,4 @@
-export const serverAPI = 'http://192.168.1.4:3000/';
+export const serverAPI = 'http://192.168.1.24:3000/';
 import { getID, storeID } from "./session";
 const postAPI = async (url, data) => {
     try {
