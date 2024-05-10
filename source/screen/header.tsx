@@ -10,16 +10,19 @@ import React from 'react';import {
 
 function Header(): React.JSX.Element {
     const navigation = useNavigation();
+    const handlePress = () => {
+        navigation.navigate("Home");
+    }
     return (
     <View style={[selfstyle.self_header]}>
         <TouchableOpacity style={selfstyle.button_icon}
         onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
             <ImageBackground style={selfstyle.img_icon} source={require('../Image/menu.png')}/>
         </TouchableOpacity>
-        <View style={selfstyle.box_title}>
+        <TouchableOpacity style={selfstyle.box_title} onPress={handlePress}>
             <Text style={[selfstyle.title, {color: '#06AFAA'}]}>FIND</Text>
             <Text style={[selfstyle.title, {color: '#67E093'}]}>BOOKS</Text>
-        </View> 
+        </TouchableOpacity> 
     </View>
   );
 }

@@ -1,10 +1,10 @@
 import { serverAPI } from "./loginAPI";
 import { getID } from "./session";
-export const getPropose = async () => {
+export const getNameEmail = async () => {
     try {
         const id_user = await getID();
       const response = await fetch(
-        `${serverAPI}propose/propose/${id_user}`,
+        `${serverAPI}user/getName/${id_user}`,
       );
       const json = await response.json();
       return json;
@@ -12,10 +12,11 @@ export const getPropose = async () => {
       console.error(error);
     }
   };
-  export const getHot = async () => {
+  export const getInfo = async () => {
     try {
+        const id_user = await getID();
       const response = await fetch(
-        `${serverAPI}propose/hot`,
+        `${serverAPI}user/info/${id_user}`,
       );
       const json = await response.json();
       return json;
@@ -23,11 +24,11 @@ export const getPropose = async () => {
       console.error(error);
     }
   };
-  export const getHistory = async () => {
+  export const getUsername = async () => {
     try {
         const id_user = await getID();
       const response = await fetch(
-        `${serverAPI}propose/history/${id_user}`,
+        `${serverAPI}user/getusername/${id_user}`,
       );
       const json = await response.json();
       return json;
@@ -35,11 +36,23 @@ export const getPropose = async () => {
       console.error(error);
     }
   };
-  export const getLoveBook = async () => {
+  export const getGenreById = async () => {
     try {
         const id_user = await getID();
       const response = await fetch(
-        `${serverAPI}propose/love/${id_user}`,
+        `${serverAPI}user/getgenre/${id_user}`,
+      );
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  export const getBookLove = async () => {
+    try {
+        const id_user = await getID();
+      const response = await fetch(
+        `${serverAPI}user/booklove/${id_user}`,
       );
       const json = await response.json();
       return json;

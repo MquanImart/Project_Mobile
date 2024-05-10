@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import styles from './styles_login';
 import {
@@ -12,33 +12,65 @@ import {
   View,
 } from 'react-native';
 import CardBook from './cardbook'; 
-function ManagerAccount(): React.JSX.Element {
+import Header from './header';
+import { getInfo, getUsername } from '../API/userAPI';
 
+type InfoUser = {
+    id: number,
+    name: string,
+    email: string,
+    phone: string,
+    gender: number,
+    dob: string,
+    avatar: string,
+}
+
+function ManagerAccount({navigation}): React.JSX.Element {
+
+    const [info, setinfo] = useState<InfoUser>();
+    const [username, setusername] = useState('');
+    const handleBackPress = () => { 
+        navigation.goBack();
+      };
+      useEffect(() => {
+        getInfo().then(async result => {
+            await setinfo(result[0]);
+        });
+        getUsername().then(async result => {
+            await setusername(result[0].username);
+        });
+    }, []);
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <Header/>
+        <TouchableOpacity style={selfstyle.box_img}
+            onPress={handleBackPress}>
+              <ImageBackground style={selfstyle.img} source={require('../Image/left-arrow.png')}/>
+              <Text style={selfstyle.textback}>Quay lại</Text>
+        </TouchableOpacity>  
         <View style={selfstyle.box_item}>
             <View style={selfstyle.box_title}>
                 <Text style={selfstyle.title}>Thông Tin Cá Nhân</Text>
             </View>
             <View style={selfstyle.box_input}>
                 <Text style={selfstyle.text_conntet}>Họ và tên: </Text>
-                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value='Phan Minh Quân' readOnly/>
+                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value={info?.name} readOnly/>
             </View>
             <View style={selfstyle.box_input}>
                 <Text style={selfstyle.text_conntet}>Email: </Text>
-                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value='21110740@student.hcmute.edu.vn' readOnly/>
+                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value={info?.email} readOnly/>
             </View>
             <View style={selfstyle.box_input}>
                 <Text style={selfstyle.text_conntet}>Số điện thoại: </Text>
-                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value='0765058xxx' readOnly/>
+                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value={info?.phone} readOnly/>
             </View>
             <View style={selfstyle.box_input}>
                 <Text style={selfstyle.text_conntet}>Ngày sinh: </Text>
-                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value='14/04/2003' readOnly/>
+                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value={info?.dob} readOnly/>
             </View>
             <View style={selfstyle.box_input}>
                 <Text style={selfstyle.text_conntet}>Giới Tính: </Text>
-                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value='Nam' readOnly/>
+                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value={info?.gender == 1? 'Nam': 'Nữ'} readOnly/>
             </View>
         </View>
         <View style={selfstyle.box_item}>
@@ -47,7 +79,7 @@ function ManagerAccount(): React.JSX.Element {
             </View>
             <View style={selfstyle.box_input}>
                 <Text style={selfstyle.text_conntet}>Tên tài khoản: </Text>
-                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value='quanabc123' readOnly/>
+                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} value={username} readOnly/>
             </View>
             <View style={selfstyle.box_input}>
                 <Text style={selfstyle.text_conntet}>Mật khẩu: </Text>
@@ -108,6 +140,22 @@ const selfstyle = StyleSheet.create({
     size_button: {
         width: 120,
         height: 50,
-    }
+    },
+    box_img: {
+        width: '30%',
+        height: 45,
+        padding: 10,
+        flexDirection: 'row'
+      },
+      img: {
+        width: 25,
+        height: 25
+      },
+      textback: {
+        alignSelf: 'center',
+        color: '#06AFAA',
+        fontSize: 16,
+        fontWeight: '500'
+      }
 })
 export default ManagerAccount;

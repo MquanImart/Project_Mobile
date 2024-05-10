@@ -41,6 +41,26 @@ function HomeStack(){
       </Stack.Navigator>
   );
 }
+function SearchStack(){
+  return (
+      <Stack.Navigator initialRouteName='SearchScreen' screenOptions={{
+         headerShown: false,
+      }}>
+        <Stack.Screen name="SearchScreen" component={Advanced_search} />
+        <Stack.Screen name="Detail Book" component={DetailBook} />
+      </Stack.Navigator>
+  );
+}
+function GenreStack(){
+  return (
+      <Stack.Navigator initialRouteName='CategoryScreen' screenOptions={{
+         headerShown: false,
+      }}>
+        <Stack.Screen name="CategoryScreen" component={Categorysearch} />
+        <Stack.Screen name="Detail Book" component={DetailBook} />
+      </Stack.Navigator>
+  );
+}
 function User(){
   return (
       <Stack.Navigator initialRouteName='User' screenOptions={{
@@ -50,6 +70,7 @@ function User(){
         <Stack.Screen name="ManagerAccount" component={ManagerAccount} />
         <Stack.Screen name="ChooseInterests" component={ChooseInterests} />
         <Stack.Screen name="favoritebook" component={FavoriteBook}/>
+        <Stack.Screen name='HomeDrawer' component={HomeDrawer} />
       </Stack.Navigator>
   );
 }
@@ -59,8 +80,8 @@ function HomeDrawer(){
          headerShown: false,
       }}>
         <Drawer.Screen name="Home" component={HomeStack} />
-        <Drawer.Screen name="Search" component={Advanced_search} />
-        <Drawer.Screen name="Category" component={Categorysearch} />
+        <Drawer.Screen name="Search" component={SearchStack} />
+        <Drawer.Screen name="Category" component={GenreStack} />
         <Drawer.Screen name="Profile" component={User} />
         <Drawer.Screen name="Manager Book" component={NXB} />
       </Drawer.Navigator>

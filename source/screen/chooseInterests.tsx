@@ -11,6 +11,8 @@ import { getAllGenre, postGenre } from '../API/genreAPI';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { getID } from '../API/session';
+import { getGenreById } from '../API/userAPI';
+import { resetGenericPassword } from 'react-native-keychain';
 
 type Genre = {
     id: number;
@@ -39,6 +41,9 @@ function ChooseInterests(): React.JSX.Element {
         getAllGenre().then(genre => {
             setlistgenre(genre);
         });
+        getGenreById().then(result => {
+          setSelectedGenres(result);
+        })
     }, []);
 
     const handlePassPress= () => {

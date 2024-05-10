@@ -9,13 +9,17 @@ import React from 'react';import {
 
 type StockBook = {
     title: string;
-    category: string[];
+    category: string;
     describe: string;
     indexcard: number;
+    pressButton: Function;
 }
 
-function FavoriteCard({title, category, describe, indexcard}: StockBook): React.JSX.Element {
-  return (
+function FavoriteCard({title, category, describe, indexcard, pressButton}: StockBook): React.JSX.Element {
+    const handleDeletePess = () => {
+        pressButton();
+    }
+    return (
     <View style={[styles.container,indexcard%2 === 0?styles.container_color1:styles.container_color2 ]}>
         <View style={[styles.box_img,indexcard%2 === 0?styles.box_img_color1:styles.box_img_color2]}>
             <ImageBackground style={styles.img} source={require('../Image/book.png')}/>
@@ -23,16 +27,16 @@ function FavoriteCard({title, category, describe, indexcard}: StockBook): React.
         <View style={styles.box_content}>
             <Text style={styles.title}>{title}</Text>
             <View style={styles.category}>
-            {category.map((category, index) => (
-                <Text style={[styles.text_category, indexcard%2 === 0?styles.text_category_color1:styles.text_category_color2]} key={index}>{category}</Text>
-            ))}
+                <Text style={[styles.text_category, indexcard%2 === 0?styles.text_category_color1:styles.text_category_color2]}>{category}</Text>
             </View>
             <View style={styles.box_describe}>
-                <Text style={styles.text_describe}>{describe}</Text>
+                <Text style={styles.text_describe}
+                 numberOfLines={4} // Số dòng tối đa bạn muốn hiển thị
+                 ellipsizeMode='tail'>{describe}</Text>
             </View>
         </View>
         <View style={[styles.box_button,indexcard%2 === 0?styles.boxbutton_color1:styles.boxbutton_color2]}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={handleDeletePess}>
                 <ImageBackground style={styles.img_button} source={require('../Image/bin.png')}/>
             </TouchableOpacity>
         </View>

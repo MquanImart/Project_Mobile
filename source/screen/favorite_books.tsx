@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import styles from './styles_login';
 import {
+    FlatList,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,10 +14,54 @@ import {
   View,
 } from 'react-native';
 import FavoriteCard from './favorite_card'; 
-function FavoriteBook(): React.JSX.Element {
+import { deleteBookLove, getLoveBook } from '../API/proposeAPI';
+import Header from './header';
 
+export type Typebook = {
+    id: number;
+    genre_id: number;
+    title: string;
+    author: string;
+    post_date: string;
+    describes: string;
+    img_link: string;
+    view: number;
+    active: number;
+    genre_name: string;
+}
+
+function FavoriteBook({navigation}): React.JSX.Element {
+    const [data, setdata] = useState<Typebook[]>([]);
+
+    const handleDelete = (id_book: number) => {
+        deleteBookLove(id_book).then(result =>{
+            if (result){
+                getLoveBook().then(result => {
+                    setdata(result);
+                });
+            }
+            else {
+                
+            }
+        })
+    }
+    useEffect(() => {
+        getLoveBook().then(result => {
+            setdata(result);
+        });
+    }, []);
+
+    const handleBackPress = () => { 
+        navigation.goBack();
+      };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <Header/>
+        <TouchableOpacity style={selfstyle.box_img}
+            onPress={handleBackPress}>
+              <ImageBackground style={selfstyle.img} source={require('../Image/left-arrow.png')}/>
+              <Text style={selfstyle.textback}>Quay lại</Text>
+        </TouchableOpacity>  
         <Text style={selfstyle.title}>Sách Yêu Thích</Text>
         <View style={selfstyle.box_search}>
             <TouchableOpacity style={[selfstyle.icon_search]}>
@@ -24,38 +70,19 @@ function FavoriteBook(): React.JSX.Element {
             <TextInput style={selfstyle.input_search}
                 placeholder='Tên sách' placeholderTextColor='#A6A6A6'></TextInput>
         </View>
-        <ScrollView style={selfstyle.list_book}>
-            <FavoriteCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={1} >
-            </FavoriteCard>
-            <FavoriteCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={2} >
-            </FavoriteCard>
-            <FavoriteCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={3} >
-            </FavoriteCard>
-            <FavoriteCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={4} >
-            </FavoriteCard>
-            <FavoriteCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={3} >
-            </FavoriteCard>
-            <FavoriteCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={4} >
-            </FavoriteCard>
-        </ScrollView>
+        <SafeAreaView style={selfstyle.list_book}>
+            <FlatList
+              data={data}
+              renderItem={({item, index}) => 
+              <FavoriteCard title={item.title} 
+              category={item.genre_name} 
+              describe={item.describes} 
+              indexcard={index} 
+              pressButton={() => {handleDelete(item.id)}}>
+          </FavoriteCard>}
+              keyExtractor={(item) => item.id.toString()}
+            />
+        </SafeAreaView>
     </View>
   );
 }
@@ -118,6 +145,22 @@ const selfstyle = StyleSheet.create({
     list_book: {
         width: '100%',
 
-    }
+    },
+    box_img: {
+        width: '30%',
+        height: 45,
+        padding: 10,
+        flexDirection: 'row'
+      },
+      img: {
+        width: 25,
+        height: 25
+      },
+      textback: {
+        alignSelf: 'center',
+        color: '#06AFAA',
+        fontSize: 16,
+        fontWeight: '500'
+      }
 })
 export default FavoriteBook;

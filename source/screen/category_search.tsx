@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import {
+  FlatList,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,40 +15,66 @@ import {
 import CardBook from './cardbook'; 
 import dropstyle from './dropdown';
 import Header from './header';
+import { getDataGenre, postSearchGenre } from '../API/searchAPI';
+import { Typebook } from './home';
 
 type Data = {
     label: string;
     value: string;
 }
 
-function CategorySearch(): React.JSX.Element {
+function CategorySearch({navigation}): React.JSX.Element {
+    const [result_search, setresult_search] = useState<Typebook[]>([]);
     const [valuecategory, setValuecategory] = useState<string | null>(null);
     const [isFocuscategory, setIsFocuscategory] = useState(false);
+    const flatListRef = useRef<FlatList>(null);
+    
+    const [datagenre, setdatagenre] = useState<Data[]>([]);
+    useEffect(() => {
+      getDataGenre().then(result => {
+          const transformedGenreData: Data[] = result.map((item: { genre_name: any; }, index: number) => ({
+              label: item.genre_name,
+              value: (index + 1).toString(),
+          }));
+          setdatagenre(transformedGenreData);
+      });
+      postSearchGenre(null).then(result => {
+        setresult_search(result);
+      });
+    }, []);
 
-    const data:Data[] = [
-        { label: 'Khoa Học', value: '1' },
-        { label: 'Xã Hội', value: '2' },
-        { label: 'Đời sống', value: '3' },
-        { label: 'Âm nhạc', value: '4' },
-        { label: 'Khoa Học Viễn Tưởng', value: '5' },
-        { label: 'Giáo Dục', value: '6' },
-        { label: 'Giải Trí', value: '7' },
-        { label: 'Xu hướng', value: '8' },
-        { label: 'Tất Cả', value: '9' },
-      ];
+    const handleGenrePress = async (genre_name: React.SetStateAction<string | null>) => {
+      await postSearchGenre(genre_name).then(result => {
+        setresult_search(result);
+    });
+    }
 
+    const handleResetPress = () => {
+      setValuecategory(null);
+      postSearchGenre(null).then(result => {
+        setresult_search(result);
+        
+      });
+    }
+    const handlePress = (id: any) => {
+      navigation.navigate("Detail Book", {
+          idbook: id,
+        });
+  }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
         <Header/>
         <View style={selfstyle.box_title}>
-            <Text style={selfstyle.title_search}>Thể Loại</Text>
+            <TouchableOpacity onPress={handleResetPress}>
+              <Text style={selfstyle.title_search}>Thể Loại</Text>
+              </TouchableOpacity>
             <Dropdown
                   style={[isFocuscategory && { borderColor: 'blue' }]}
                   placeholderStyle={selfstyle.dropdownTextStyle}
                   selectedTextStyle={selfstyle.dropdownTextStyle}
                   inputSearchStyle={dropstyle.inputSearchStyle}
                   iconStyle={dropstyle.iconStyle}
-                  data={data}
+                  data={datagenre}
                   search
                   maxHeight={300}
                   labelField="label"
@@ -56,44 +84,30 @@ function CategorySearch(): React.JSX.Element {
                   value={valuecategory}
                   onFocus={() => setIsFocuscategory(true)}
                   onBlur={() => setIsFocuscategory(false)}
-                  onChange={item => {
+                  onChange={async item => {
                     setValuecategory(item.value);
                     setIsFocuscategory(false);
+                    await handleGenrePress(item.label);
+
+                    flatListRef.current?.scrollToOffset({ animated: true, offset: 0 });
                   }}
                 />
         </View>
-        <ScrollView style={selfstyle.list_book}>
-            <CardBook title='The Elements of Typographic Style'
-              category={['Đồ họa', 'Văn phòng']}
-              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
-              indexcard={1} view={0} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style'
-              category={['Đồ họa', 'Văn phòng']}
-              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
-              indexcard={2} view={0} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style'
-              category={['Đồ họa', 'Văn phòng']}
-              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
-              indexcard={3} view={0} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style'
-              category={['Đồ họa', 'Văn phòng']}
-              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
-              indexcard={4} view={0} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style'
-              category={['Đồ họa', 'Văn phòng']}
-              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
-              indexcard={3} view={0} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style'
-              category={['Đồ họa', 'Văn phòng']}
-              describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. '
-              indexcard={4} view={0} >
-            </CardBook>
-        </ScrollView>
+        <SafeAreaView style={selfstyle.list_book}>
+        <FlatList
+              data={result_search}
+              renderItem={({item, index}) => 
+              <CardBook 
+              pressButton={() => handlePress(item.id)}
+              title={item.title} 
+              link_img={item.img_link}
+              category={[item.genre_name]} 
+              describe={item.describes}
+              view={item.view}
+              indexcard={index} />}
+              keyExtractor={(item) => item.id.toString()}
+            />
+        </SafeAreaView>
     </View>
   );
 }
