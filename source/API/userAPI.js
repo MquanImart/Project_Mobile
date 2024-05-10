@@ -60,3 +60,34 @@ export const getNameEmail = async () => {
       console.error(error);
     }
   };
+  export const updateInfo = async (name, email, sdt, dob, gender) => {
+    try {
+        const id_user = await getID();
+        const url = serverAPI + 'user/update';
+        
+        const data = {
+          name: name,
+          email: email,
+          sdt: sdt,
+          dob: dob,
+          gender: gender == "Nam"?1:0,
+          id : id_user
+        };
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+    
+            const json = await response.json();
+                return json === true;
+            } catch (error) {
+              console.error(error);
+            }
+        } catch (error) {
+        console.error(error);
+        }
+  };

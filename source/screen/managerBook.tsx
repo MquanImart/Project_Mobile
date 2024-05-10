@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import styles from './styles_login';
 import {
+    FlatList,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -13,49 +15,43 @@ import {
 } from 'react-native';
 import ManagerCard from './managerCard'; 
 import Header from './header';
-function ManagerBook(): React.JSX.Element {
+import { Typebook } from './home';
+import { getData } from '../API/nxbAPI';
+function ManagerBook({navigation}): React.JSX.Element {
+    const [data, setdata] = useState<Typebook[]>([]);
 
+    useEffect(() => {
+        getData().then(result => {
+            setdata(result);
+        });
+    }, []);
+
+    const handleOpenAdd = () => {
+        navigation.navigate("Editbook", {action: "add"})
+    }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
         <Header/>
         <View style={selfstyle.header}>
             <Text style={selfstyle.title}>Quản Lý Sách</Text>
-            <TouchableOpacity style={selfstyle.button}>
+            <TouchableOpacity style={selfstyle.button}
+            onPress={handleOpenAdd}>
                 <Text style={selfstyle.text_button}>Thêm Sách</Text>
             </TouchableOpacity>
         </View>
-        <ScrollView style={selfstyle.list_book}>
-            <ManagerCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={1} >
-            </ManagerCard>
-            <ManagerCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={2} >
-            </ManagerCard>
-            <ManagerCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={3} >
-            </ManagerCard>
-            <ManagerCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={4} >
-            </ManagerCard>
-            <ManagerCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={3} >
-            </ManagerCard>
-            <ManagerCard title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={4} >
-            </ManagerCard>
-        </ScrollView>
+        <SafeAreaView style={selfstyle.list_book}>
+            <FlatList
+              data={data}
+              renderItem={({item, index}) => 
+              <ManagerCard 
+              title={item.title} 
+              link_img={item.img_link}
+              category={[item.genre_name]} 
+              describe={item.describes}
+              indexcard={index} />}
+              keyExtractor={(item) => item.id.toString()}
+            />
+        </SafeAreaView>
     </View>
   );
 }

@@ -12,23 +12,30 @@ type StockBook = {
     category: string[];
     describe: string;
     indexcard: number;
+    link_img: string;
 }
 
-function managerCard({title, category, describe, indexcard}: StockBook): React.JSX.Element {
+function managerCard({title,link_img, category, describe, indexcard}: StockBook): React.JSX.Element {
   return (
     <View style={[styles.container,indexcard%2 === 0?styles.container_color1:styles.container_color2 ]}>
         <View style={[styles.box_img,indexcard%2 === 0?styles.box_img_color1:styles.box_img_color2]}>
-            <ImageBackground style={styles.img} source={require('../Image/book.png')}/>
+            <ImageBackground style={styles.img} source={{uri: link_img}}/>
         </View>
         <View style={styles.box_content}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}
+            numberOfLines={2}
+            ellipsizeMode='tail'
+            >{title}</Text>
             <View style={styles.category}>
             {category.map((category, index) => (
                 <Text style={[styles.text_category, indexcard%2 === 0?styles.text_category_color1:styles.text_category_color2]} key={index}>{category}</Text>
             ))}
             </View>
             <View style={styles.box_describe}>
-                <Text style={styles.text_describe}>{describe}</Text>
+                <Text style={styles.text_describe}
+                numberOfLines={3}
+                ellipsizeMode='tail'
+                >{describe}</Text>
             </View>
         </View>
         <View style={[styles.box_button,indexcard%2 === 0?styles.boxbutton_color1:styles.boxbutton_color2]}>
@@ -59,9 +66,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(103,224,147,0.2)',
     },
     box_img: {
-        width: '30%',
+        width: '20%',
         height: 120,
-        borderRadius: 10,
+        borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -72,11 +79,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#67E093",
     },
     img: {
-        width: '80%',
-        height: '80%',
+        width: '100%',
+        height: '100%',
     },
     box_content: {
-        width: '60%',
+        width: '70%',
         padding: 5,
     },
     title: {

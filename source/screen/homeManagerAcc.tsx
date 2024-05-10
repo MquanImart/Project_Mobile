@@ -56,21 +56,23 @@ function HomeManagerAccount(): React.JSX.Element {
             </View>
         </View>
         <View style={selfstyle.box_homeaccount}>
-        <TouchableOpacity style={selfstyle.box_button}
-          onPress={handleManagerAccPress}>
-            <Text style={selfstyle.text_boxbutton}>Quản lý tài khoản</Text>
-            <ImageBackground style={selfstyle.img_icon} source={require('../Image/setting.png')}/>
-        </TouchableOpacity>
-        <TouchableOpacity style={selfstyle.box_button}
-        onPress={handleChooseIntPress}>
-            <Text style={selfstyle.text_boxbutton}>Thay đổi thể loại yêu thích</Text>
-            <ImageBackground style={selfstyle.img_icon} source={require('../Image/genre.png')}/>
-        </TouchableOpacity>
-        <TouchableOpacity style={selfstyle.box_button}
-        onPress={handleFavPress}>
-            <Text style={selfstyle.text_boxbutton}>Sách đã yêu thích</Text>
-            <ImageBackground style={selfstyle.img_icon} source={require('../Image/heart.png')}/>
-        </TouchableOpacity>
+        <View style={selfstyle.box_item_button}>
+          <TouchableOpacity style={selfstyle.box_button}
+            onPress={handleManagerAccPress}>
+              <Text style={selfstyle.text_boxbutton}>Quản lý tài khoản</Text>
+              <ImageBackground style={selfstyle.img_icon} source={require('../Image/setting.png')}/>
+          </TouchableOpacity>
+          <TouchableOpacity style={selfstyle.box_button}
+          onPress={handleChooseIntPress}>
+              <Text style={selfstyle.text_boxbutton}>Thay đổi thể loại yêu thích</Text>
+              <ImageBackground style={selfstyle.img_icon} source={require('../Image/genre.png')}/>
+          </TouchableOpacity>
+          <TouchableOpacity style={selfstyle.box_button}
+          onPress={handleFavPress}>
+              <Text style={selfstyle.text_boxbutton}>Sách đã yêu thích</Text>
+              <ImageBackground style={selfstyle.img_icon} source={require('../Image/heart.png')}/>
+          </TouchableOpacity>
+        </View>
         </View>
     </View>
   );
@@ -123,7 +125,7 @@ const selfstyle = StyleSheet.create({
   box_button: {
     width: '50%',
     height: 50,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     flexDirection: 'row',
   },
@@ -132,6 +134,10 @@ const selfstyle = StyleSheet.create({
     fontWeight: '500',
     fontSize: 16,
     paddingHorizontal: 5,
+  },
+  box_item_button: {
+    width: '100%',
+    alignItems: 'center',
   }
 })
 export default HomeManagerAccount;
