@@ -99,7 +99,7 @@ function Advanced_search(): React.JSX.Element {
                     placeholder='...'/>
                 </View>
             </View>
-            <View style={selfstyle.box_button}>
+            <View style={selfstyle.box_button}> 
                 <TouchableOpacity style={[selfstyle.box_search, {backgroundColor: '#06AFAA', width: '45%'}]}>
                     <Text style={styles.item_textcontent}>Tìm</Text>
                 </TouchableOpacity>
@@ -122,6 +122,16 @@ function Advanced_search(): React.JSX.Element {
                 category={['Đồ họa', 'Văn phòng']} 
                 describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
                 indexcard={3} >
+            </CardBook>
+            <CardBook title='The Elements of Typographic Style' 
+                category={['Đồ họa', 'Văn phòng']} 
+                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
+                indexcard={4} >
+            </CardBook>
+            <CardBook title='The Elements of Typographic Style' 
+                category={['Đồ họa', 'Văn phòng']} 
+                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
+                indexcard={5} >
             </CardBook>
         </ScrollView>
         </View>
