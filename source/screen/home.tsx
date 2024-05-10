@@ -1,8 +1,9 @@
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import styles from './styles_login';
+import React, { useEffect, useState } from 'react';
+
 import {
+    FlatList,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -12,58 +13,104 @@ import {
   View,
 } from 'react-native';
 import CardBook from './cardbook'; 
-function Home(): React.JSX.Element {
+import { getHistory, getHot, getLoveBook, getPropose } from '../API/proposeAPI';
+import HeaderSelf from './header';
+import { selectImage } from '../API/imgbook';
+export type Typebook = {
+    id: number;
+    genre_id: number;
+    title: string;
+    author: string;
+    post_date: string;
+    describes: string;
+    img_link: string;
+    view: number;
+    active: number;
+    genre_name: string;
+}
+function Home({navigation}): React.JSX.Element {
+    const [listpropose, setlistpropose] = useState<Typebook[]>([]);
+    const [focus_propose, setfocus_propose] = useState(1);
+    const [image, setImage] = useState(null);
+    const handleselectImage = async () => {
+        console.log("");
+    }
+    useEffect(() => {
+        getPropose().then(propose => {
+            setlistpropose(propose);
+        });
+    }, []);
+    const handleProposePress = () => {
+        setfocus_propose(1);
+        getPropose().then(propose => {
+            setlistpropose(propose);
+        });
+    }
+    const handleHotPress = () => {
+        setfocus_propose(2);
+        getHot().then(listbook => {
+            setlistpropose(listbook);
+        });
+    }
+    const handleHistoryPress = () => {
+        setfocus_propose(3);
+        getHistory().then(listbook => {
+            setlistpropose(listbook);
+        });
+    }
+    const handleLovePress = () => {
+        setfocus_propose(4);
+        getLoveBook().then(listbook => {
+            setlistpropose(listbook);
+        });
+    }
 
+    const handlePress = (id: any) => {
+        navigation.navigate("Detail Book", {
+            idbook: id,
+          });
+    }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <HeaderSelf/>
         <View style={selfstyle.box_search}>
             <TouchableOpacity style={[selfstyle.icon_search]}>
                 <ImageBackground style={selfstyle.img_icon} source={require('../Image/find.png')}/>
             </TouchableOpacity>
             <TextInput style={selfstyle.input_search}
                 placeholder='Tên sách' placeholderTextColor='#A6A6A6'></TextInput>
-            <TouchableOpacity style={selfstyle.icon_search}>
+            <TouchableOpacity style={selfstyle.icon_search} onPress={handleselectImage}>
                 <ImageBackground style={selfstyle.img_icon} source={require('../Image/camera.png')}/>
             </TouchableOpacity>
         </View>
         <View style={selfstyle.box_propose}>
-            <TouchableOpacity><Text style={[selfstyle.text_propose, {color: '#06AFAA'}]}>Đề xuất</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={selfstyle.text_propose}>Hot</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={selfstyle.text_propose}>Đã xem</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={selfstyle.text_propose}>Yêu Thích</Text></TouchableOpacity>
+            <TouchableOpacity onPress={handleProposePress}>
+                <Text style={[selfstyle.text_propose, focus_propose == 1?{color: '#06AFAA'}:{}]}>Đề xuất</Text></TouchableOpacity>
+            <TouchableOpacity onPress={handleHotPress}>
+                <Text style={[selfstyle.text_propose, focus_propose == 2?{color: '#06AFAA'}:{}]}>Hot</Text>
+                </TouchableOpacity>
+            <TouchableOpacity onPress={handleHistoryPress}>
+                <Text style={[selfstyle.text_propose, focus_propose == 3?{color: '#06AFAA'}:{}]}>Đã xem</Text>
+                </TouchableOpacity>
+            <TouchableOpacity onPress={handleLovePress}>
+                <Text style={[selfstyle.text_propose, focus_propose == 4?{color: '#06AFAA'}:{}]}>Yêu Thích</Text>
+                </TouchableOpacity>
         </View>
-        <ScrollView style={selfstyle.list_book}>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={1} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={2} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={3} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={4} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={3} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={4} >
-            </CardBook>
-        </ScrollView>
+        <SafeAreaView style={selfstyle.list_book}>
+            <FlatList
+              data={listpropose}
+              renderItem={({item, index}) => 
+              <CardBook 
+              pressButton={() => handlePress(item.id)}
+              title={item.title} 
+              link_img={item.img_link}
+              category={[item.genre_name]} 
+              describe={item.describes}
+              view={item.view}
+              indexcard={index} />}
+              keyExtractor={(item) => item.id.toString()}
+            />
+        </SafeAreaView>
     </View>
   );
 }
@@ -125,6 +172,11 @@ const selfstyle = StyleSheet.create({
     list_book: {
         width: '100%',
 
+    },
+    textmsg: {
+        fontSize: 20,
+        fontWeight: '500',
+        alignSelf: 'center'
     }
 })
 export default Home;

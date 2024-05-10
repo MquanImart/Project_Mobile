@@ -17,7 +17,7 @@ import { postChangePass, postSendEmail } from '../API/loginAPI';
 type RootStackParamList = {
   'Login': undefined;
   'Resgister': undefined;
-  'ResetPass': undefined;
+  'Reset Password': undefined;
   // ... các screen khác ...
 };
 function ForgotPassword(): React.JSX.Element {
@@ -31,7 +31,7 @@ function ForgotPassword(): React.JSX.Element {
   const [username_verify, setusername_verify] = useState("");
   const handleBackPress = () => { 
     setIsTextVisible(false);
-    setTextMsg("Username");
+    setTextMsg("Nhập mã");
     navigation.navigate('Login'); 
   };
   const handleResgisterPress = () => { 
@@ -59,11 +59,11 @@ function ForgotPassword(): React.JSX.Element {
       if (result === true) {
         setIsTextVisibleotp(false);
         setTextMsgotp("Username");
-        navigation.navigate('ResetPass'); 
+        navigation.navigate('Reset Password'); 
       } else {
         setotp("");
         setIsTextVisibleotp(true);
-        setTextMsgotp("Không đúng");
+        setTextMsgotp("Mã không đúng");
       }
   })
   .catch(error => {

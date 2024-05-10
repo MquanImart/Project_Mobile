@@ -7,25 +7,59 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { getAllGenre } from '../API/genreAPI';
+import { getAllGenre, postGenre } from '../API/genreAPI';
 import { GestureHandlerRootView, ScrollView } from 'react-native-gesture-handler';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { getID } from '../API/session';
+import { getGenreById } from '../API/userAPI';
+import { resetGenericPassword } from 'react-native-keychain';
 
 type Genre = {
     id: number;
     genre_name: string;
 }
+type SelectedGenresType = {
+    [key: number]: boolean;
+  };
+
+type RootStackParamList = {
+  'HomeDrawer': undefined;
+};
 
 function ChooseInterests(): React.JSX.Element {
+    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
     const [listgenre, setlistgenre] = useState<Genre[]>([]);
-    const handlePress = () =>{
+    const [selectedGenres, setSelectedGenres] = useState<SelectedGenresType>({});
 
-    }
+    const handlePress = (id: number) => {
+      setSelectedGenres(prevState => ({
+        ...prevState,
+        [id]: !prevState[id]
+      }));
+    };
     useEffect(() => {
         getAllGenre().then(genre => {
             setlistgenre(genre);
         });
+        getGenreById().then(result => {
+          setSelectedGenres(result);
+        })
     }, []);
 
+    const handlePassPress= () => {
+        navigation.navigate('HomeDrawer');
+    }
+    const handleGenrePress = () => {
+        postGenre(selectedGenres).then(result => {
+          if (result === true) {
+            navigation.navigate('HomeDrawer');
+          } else {
+          }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+        };
   return (
     <View style={{flex: 1}}>
         <View style={[selfstyles.box_item, {height: 140}]}>
@@ -35,18 +69,24 @@ function ChooseInterests(): React.JSX.Element {
         <GestureHandlerRootView style={{ flex: 1 }}>
             <ScrollView style={[{height: 556}]}>
               {listgenre.map((item, index) => (
-                <TouchableOpacity key={item.id} style={[selfstyles.interest, index%2==0?{alignSelf: 'flex-start'}: {alignSelf: 'flex-end'}]}
-                    onPress={handlePress}>
+                <TouchableOpacity key={item.id} 
+                style={[selfstyles.interest, 
+                    index%2==0?{alignSelf: 'flex-start'}: {alignSelf: 'flex-end'},
+                    { backgroundColor: selectedGenres[item.id] ? '#62D5C4' : 'white' }
+                    ]}
+                onPress={() => handlePress(item.id)}>
                   <Text style={selfstyles.text_inter}>{item.genre_name}</Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
         </GestureHandlerRootView>
         <View style={[selfstyles.box_item, selfstyles.box_button, {height: 100}]}>
-            <TouchableOpacity style={[selfstyles.button, {backgroundColor: '#ccc'}]}>
+            <TouchableOpacity style={[selfstyles.button, {backgroundColor: '#ccc'}]}
+            onPress={handlePassPress}>
                 <Text style={[styles.item_textcontent, {color: 'black'}]}>Bỏ Qua</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[selfstyles.button, {backgroundColor: '#62D5C4'}]}>
+            <TouchableOpacity style={[selfstyles.button, {backgroundColor: '#62D5C4'}]}
+            onPress={handleGenrePress}>
                 <Text style={styles.item_textcontent}>Xác nhận</Text>
             </TouchableOpacity>
         </View>

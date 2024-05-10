@@ -16,9 +16,9 @@ import { postLogin } from '../API/loginAPI';
 import { ScrollView } from 'react-native-gesture-handler';
 // Xác định kiểu dữ liệu cho danh sách tham số của navigator
 type RootStackParamList = {
-  'Home': undefined;
-  'ForgotPass': undefined;
-  'Resgister': undefined;
+  'HomeDrawer': undefined;
+  'StackForgotPass': undefined;
+  'ResgisterAccount': undefined;
   // ... các screen khác ...
 };
 function Login(): React.JSX.Element {
@@ -34,7 +34,7 @@ function Login(): React.JSX.Element {
       if (result === true) {
         setIsTextVisible(false);
         setTextMsg("");
-        navigation.navigate('Home'); // Chuyển đến màn hình Home
+        navigation.navigate('HomeDrawer'); // Chuyển đến màn hình Home
       } else {
         setIsTextVisible(true);
         setTextMsg("Tên đăng nhập hoặc mật khẩu không đúng");
@@ -45,10 +45,10 @@ function Login(): React.JSX.Element {
   });
   };
   const handleForgotPassPress = () => { 
-    navigation.navigate('ForgotPass'); 
+    navigation.navigate('StackForgotPass'); 
   };
   const handleResgisterPress = () => { 
-    navigation.navigate('Resgister'); 
+    navigation.navigate('ResgisterAccount'); 
   };
   const handleShowPassPress = () => { 
     setIsPasssecure(!isPasssecure);

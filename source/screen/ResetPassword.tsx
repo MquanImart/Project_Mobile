@@ -36,7 +36,7 @@ function ResetPassword(): React.JSX.Element {
       if (result === true) {
         setIsTextVisible(false);
         setTextMsg("");
-        navigation.navigate('Login'); // Chuyển đến màn hình Home
+        navigation.navigate('Login');
       } else {
         setIsTextVisible(true);
         setTextMsg("Mật khẩu không khớp");

@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import styles from './styles_login';
 import {
+    FlatList,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,57 +16,99 @@ import {
 import CardBook from './cardbook'; 
 import Header from './header'
 import Comment from './comment';
-function DetailBook(): React.JSX.Element {
+import { getComment, getDataBook } from '../API/detailbookAPI';
 
+type DetailBook = {
+    id: number;
+    imglink: string;
+    postdate: string;
+    title: string;
+    genre: string;
+    author: string;
+    like: number;
+    star: number;
+    commemt: number;
+    describe: string;
+    view: number;
+}
+
+type DataComment = {
+    score: number;
+    name: string,
+    book_id: number,
+    user_id: number,
+    content: string,
+    comment_date: string
+}
+
+function DetailBook({route, navigation}): React.JSX.Element {
+    const [databook, setdatabook] = useState<DetailBook>();
+    const [comments, setcomments] = useState<DataComment[]>([]);
+    const { idbook } = route.params;
+    useEffect(() => {
+        getDataBook(idbook).then(async result => {
+            await setdatabook(result);
+        });
+        getComment(idbook).then(async result => {
+            await setcomments(result);
+        });
+    }, []);
+
+    const handleBackPress = () => { 
+        navigation.goBack();
+      };
   return (
-    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
+    <View style={{flex: 1, backgroundColor: '#fff'}}>
         <Header/>
+        <TouchableOpacity style={selfstyle.box_img}
+            onPress={handleBackPress}>
+              <ImageBackground style={selfstyle.img} source={require('../Image/left-arrow.png')}/>
+              <Text style={selfstyle.textback}>Quay lại</Text>
+        </TouchableOpacity>  
         <View style={selfstyle.container}>
             <View style={selfstyle.box_title}><Text style={selfstyle.title}>Thông tin sách</Text></View>
             <View style={selfstyle.box_info}>
-                <Text style={selfstyle.name_book}>The Elements of Typographic Style</Text>
+                <Text style={selfstyle.name_book}>{databook?.title}</Text>
                 <View style={selfstyle.box_category}>
-                    <View style={selfstyle.category}><Text style={selfstyle.text_category}>Khoa học</Text></View>
-                    <View style={selfstyle.category}><Text style={selfstyle.text_category}>Thiết kế đồ họa</Text></View>
-                    <View style={selfstyle.category}><Text style={selfstyle.text_category}>Văn phòng</Text></View>
-                    <View style={selfstyle.category}><Text style={selfstyle.text_category}>Đời sống xã hội</Text></View>
+                    <View style={selfstyle.category}><Text style={selfstyle.text_category}>{databook?.genre}</Text></View>
                 </View>
                 <View style={selfstyle.box_content}>
                     <Text style={selfstyle.label}>Tác giả:</Text>
-                    <Text style={selfstyle.text_content}>Robert Bringhurst</Text>
-                </View>
-                <View style={selfstyle.box_content}>
-                    <Text style={selfstyle.label}>Quốc Gia:</Text>
-                    <Text style={selfstyle.text_content}>Cannada</Text>
+                    <Text style={selfstyle.text_content}>{databook?.author}</Text>
                 </View>
                 <View style={selfstyle.box_feedback}>
                     <View style={selfstyle.box_icon}>
                         <ImageBackground style={selfstyle.imgicon} source={require('../Image/heart.png')}/>
-                        <Text style={selfstyle.text_content}>32</Text>
+                        <Text style={selfstyle.text_content}>{databook?.like}</Text>
                     </View>
                     <View style={selfstyle.box_icon}>
                         <ImageBackground style={selfstyle.imgicon} source={require('../Image/star.png')}/>
-                        <Text style={selfstyle.text_content}>4.5</Text>
+                        <Text style={selfstyle.text_content}>{databook?.star}</Text>
                     </View>
                     <View style={selfstyle.box_icon}>
                         <ImageBackground style={selfstyle.imgicon} source={require('../Image/comment.png')}/>
-                        <Text style={selfstyle.text_content}>12</Text>
+                        <Text style={selfstyle.text_content}>{databook?.commemt}</Text>
                     </View>
                 </View>
             </View>
             <View style={selfstyle.box_title}><Text style={selfstyle.title}>Mô tả</Text></View>
-            <Text style={[selfstyle.describe, selfstyle.text_content]}>Được dịch từ tiếng Anh-The Elements of Typographic Style là 
-            một cuốn sách về kiểu chữ và phong cách của nhà sắp chữ, nhà thơ và dịch giả người Canada Robert Bringhurst.
-            Được xuất bản lần đầu vào năm 1992 bởi Nhà xuất bản Hartley & Marks, nó đã được sửa đổi vào các năm 1996, 2001, 
-            2002, 2004, 2005, 2008 và 2012.</Text>
+            <ScrollView style={selfstyle.box_describe}>
+            <Text style={[selfstyle.describe, selfstyle.text_content]}>{databook?.describe}</Text>
+            </ScrollView>
             <View style={selfstyle.box_title}><Text style={selfstyle.title}>Bình luận</Text></View>
-            <View style={selfstyle.box_comment}>
-                <Comment user='Phan Minh Quân' star={5} content='Một cuốn sách rất hay và bổ ích'></Comment>
-                <Comment user='Nguyễn Bảo Quốc' star={4} content='VCl'></Comment>
-                <Comment user='Thái Thanh Hưng' star={4.5} content='phong cách của nhà sắp chữ, nhà thơ và dịch giả người Canada Robert Bringhurst'></Comment>
-            </View>
+            <SafeAreaView style={selfstyle.box_comment}>
+                {comments.length > 0 && <FlatList
+                  data={comments}
+                  renderItem={({item}) => 
+                  <Comment 
+                  user={item.name} 
+                  star={item.score}
+                  content={item.content} />}
+                  keyExtractor={(item) => item.user_id.toString()}
+                />}
+            </SafeAreaView>
         </View>
-    </ScrollView>
+    </View>
   );
 }
 const selfstyle = StyleSheet.create({
@@ -131,6 +175,9 @@ const selfstyle = StyleSheet.create({
         fontSize: 16,
         fontWeight: '300',
     },
+    box_describe: {
+        height: 150,
+    },
     describe: {
         textAlign: 'justify'
     },
@@ -148,6 +195,22 @@ const selfstyle = StyleSheet.create({
     },
     box_comment: {
 
-    }
+    },
+    box_img: {
+        width: '30%',
+        height: 45,
+        padding: 10,
+        flexDirection: 'row'
+      },
+      img: {
+        width: 25,
+        height: 25
+      },
+      textback: {
+        alignSelf: 'center',
+        color: '#06AFAA',
+        fontSize: 16,
+        fontWeight: '500'
+      }
 })
 export default DetailBook;

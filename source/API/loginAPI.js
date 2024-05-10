@@ -1,4 +1,5 @@
-export const serverAPI = 'http://192.168.1.9:3000/';
+export const serverAPI = 'http://10.134.3.168:3000/';
+import { getID, storeID } from "./session";
 const postAPI = async (url, data) => {
     try {
         const response = await fetch(url, {
@@ -22,7 +23,23 @@ export const postLogin = async (username, password) => {
             username: username,
             password: password
         };
-            return postAPI(url, data);       
+        let result = await postAPI(url, data);   
+        
+        if (result == true){
+          let result = null;
+          try {
+            const response = await fetch(
+              `${serverAPI}login/getID/${username}`,  
+            );
+            result_id = await response.json();
+          } catch (error) {
+            console.error(error);
+          }
+          if (result_id != null) {
+            await storeID(result_id[0].id);
+          }
+        }
+            return result    
         } catch (error) {
         console.error(error);
         }
@@ -77,10 +94,17 @@ export const postLogin = async (username, password) => {
             role_id: role_id !== null ? parseInt(role_id, 10) : null
         };
         if(await postAPI(url, data)){
+          let result = null;
           try {
-            await AsyncStorage.setItem('@username', username);
+            const response = await fetch(
+              `${serverAPI}login/getID/${username}`,  
+            );
+            result = await response.json();
           } catch (error) {
             console.error(error);
+          }
+          if (result != null){
+            await storeID(result[0].id);
           }
           return true;
           };

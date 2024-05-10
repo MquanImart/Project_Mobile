@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import type {PropsWithChildren} from 'react';
 import styles from './styles_login';
-import dropstyle from './dropdown'
+import dropstyle from './dropdown';
+import Header from './header';
 import { Dropdown } from 'react-native-element-dropdown';
 import {
+    FlatList,
   ImageBackground,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,34 +17,77 @@ import {
   View,
 } from 'react-native';
 import CardBook from './cardbook'; 
+import { getDataSearch, postSearchAdvanced } from '../API/searchAPI';
+import { Typebook } from './home';
 
-
-
+type Data = {
+    'label': string,
+    'value': string;
+}
 const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' },
-    { label: 'Item 5', value: '5' },
-    { label: 'Item 6', value: '6' },
-    { label: 'Item 7', value: '7' },
-    { label: 'Item 8', value: '8' },
+    { label: 'Tên Sách A -> Z', value: '1' },
+    { label: 'Tên Sách Z -> A', value: '2' },
+    { label: 'Ngày phát hành mới nhất', value: '3' },
+    { label: 'Ngày phát hành lâu nhất', value: '4' },
   ];
 
-function Advanced_search(): React.JSX.Element {
+function Advanced_search({navigation}): React.JSX.Element {
+    const [result_search, setresult_search] = useState<Typebook[]>([]);
+    const [datagenre, setdatagenre] = useState<Data[]>([]);
+    const [dataauthor, setdataauthor] = useState<Data[]>([]);
 
+    const [genre, setgenre] = useState<string | null>(null);
     const [valuecategory, setValuecategory] = useState<string | null>(null);
     const [isFocuscategory, setIsFocuscategory] = useState(false);
 
-    const [valuecounttry, setValuecounttry] = useState<string | null>(null);
-    const [isFocuscounttry, setIsFocuscounttry] = useState(false);
+    const [author, setauthor] = useState<string | null>(null);
+    const [valueauthor, setValueauthor] = useState<string | null>(null);
+    const [isFocusauthor, setIsFocusauthor] = useState(false);
 
-  
+    const [valuesort, setValuesort] = useState<string | null>(null);
+    const [isFocussort, setIsFocussort] = useState(false);
+
+    useEffect(() => {
+        getDataSearch().then(result => {
+            const transformedGenreData: Data[] = result.genre.map((item: { genre_name: any; }, index: number) => ({
+                label: item.genre_name,
+                value: (index + 1).toString(),
+            }));
+            setdatagenre(transformedGenreData);
+
+            const transformedAuthorData: Data[] = result.author.map((item: { author: any; }, index: number) => ({
+                label: item.author,
+                value: (index + 1).toString(), 
+            }));
+            setdataauthor(transformedAuthorData);
+        });
+    }, []);
+
+    const handleSearchPress = () => {
+        postSearchAdvanced(genre, author, valuesort).then(result => {
+            setresult_search(result);
+        });
+    }
+    const handleResetPress = () => {
+        setValuecategory(null);
+        setgenre(null);
+        setauthor(null);
+        setValueauthor(null);
+        setValuesort(null);
+    }
+    const handlePress = (id: any) => {
+        navigation.navigate("Detail Book", {
+            idbook: id,
+          });
+    }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
+        <Header/>
         <View style={{flex: 1}}>
-            <View style={selfstyle.box_search}>
-                
+            <View style={selfstyle.box_search}>  
+                <TouchableOpacity style={[selfstyle.icon_search]}>
+                    <ImageBackground style={selfstyle.img_icon} source={require('../Image/find.png')}/>
+                </TouchableOpacity>
                 <TextInput style={selfstyle.input_search}
                     placeholder='Tên sách' placeholderTextColor='#A6A6A6'></TextInput>
                 <TouchableOpacity style={selfstyle.icon_search}>
@@ -55,7 +101,7 @@ function Advanced_search(): React.JSX.Element {
                   selectedTextStyle={dropstyle.selectedTextStyle}
                   inputSearchStyle={dropstyle.inputSearchStyle}
                   iconStyle={dropstyle.iconStyle}
-                  data={data}
+                  data={datagenre}
                   search
                   maxHeight={300}
                   labelField="label"
@@ -67,73 +113,80 @@ function Advanced_search(): React.JSX.Element {
                   onBlur={() => setIsFocuscategory(false)}
                   onChange={item => {
                     setValuecategory(item.value);
+                    setgenre(item.label);
                     setIsFocuscategory(false);
                   }}
                 />
                 <Dropdown
-                  style={[dropstyle.dropdown, isFocuscounttry && { borderColor: 'blue' }]}
+                  style={[dropstyle.dropdown, isFocusauthor && { borderColor: 'blue' }]}
                   placeholderStyle={dropstyle.placeholderStyle}
                   selectedTextStyle={dropstyle.selectedTextStyle}
                   inputSearchStyle={dropstyle.inputSearchStyle}
                   iconStyle={dropstyle.iconStyle}
-                  data={data}
+                  data={dataauthor}
                   search
                   maxHeight={300}
                   labelField="label"
                   valueField="value"
-                  placeholder={!isFocuscounttry ? 'Quốc gia' : '...'}
+                  placeholder={!isFocusauthor ? 'Tác giả' : '...'}
                   searchPlaceholder="Search..."
-                  value={valuecounttry}
-                  onFocus={() => setIsFocuscounttry(true)}
-                  onBlur={() => setIsFocuscounttry(false)}
+                  value={valueauthor}
+                  onFocus={() => setIsFocusauthor(true)}
+                  onBlur={() => setIsFocusauthor(false)}
                   onChange={item => {
-                    setValuecounttry(item.value);
-                    setIsFocuscounttry(false);
+                    setValueauthor(item.value);
+                    setauthor(item.label);
+                    setIsFocusauthor(false);
                   }}
                 />
             </View>
-            <View style={[selfstyle.box_search,selfstyle.box_author]}>
-                <View style={selfstyle.box_textauthor}><Text style={selfstyle.text_author}>Tác Giả: </Text></View>
-                <View style={selfstyle.box_textinput}>
-                    <TextInput style={selfstyle.search_textinput}
-                    placeholder='...'/>
-                </View>
+            <View style={[selfstyle.box_search]}>
+                <Dropdown
+                      style={[dropstyle.dropdown,{width:'90%'}, isFocussort && { borderColor: 'blue' }]}
+                      placeholderStyle={dropstyle.placeholderStyle}
+                      selectedTextStyle={dropstyle.selectedTextStyle}
+                      inputSearchStyle={dropstyle.inputSearchStyle}
+                      iconStyle={dropstyle.iconStyle}
+                      data={data}
+                      search
+                      maxHeight={300}
+                      labelField="label"
+                      valueField="value"
+                      placeholder={!isFocussort ? 'Sắp xếp theo' : '...'}
+                      searchPlaceholder="Search..."
+                      value={valuesort}
+                      onFocus={() => setIsFocussort(true)}
+                      onBlur={() => setIsFocussort(false)}
+                      onChange={item => {
+                        setValuesort(item.value);
+                        setIsFocussort(false);
+                      }}
+                    />
             </View>
-            <View style={selfstyle.box_button}> 
-                <TouchableOpacity style={[selfstyle.box_search, {backgroundColor: '#06AFAA', width: '45%'}]}>
+            <View style={selfstyle.box_button}>
+                <TouchableOpacity style={[selfstyle.box_search, {backgroundColor: '#06AFAA', width: '45%'}]}
+                onPress={handleSearchPress}>
                     <Text style={styles.item_textcontent}>Tìm</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={[selfstyle.box_search, {backgroundColor: '#06AFAA', width: '45%'}]}>
+                <TouchableOpacity style={[selfstyle.box_search, {backgroundColor: '#06AFAA', width: '45%'}]}
+                onPress={handleResetPress}>
                     <Text style={styles.item_textcontent}>Reset</Text>
                 </TouchableOpacity>
             </View>
-            <ScrollView style={selfstyle.list_book}>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={1} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={2} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={3} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={4} >
-            </CardBook>
-            <CardBook title='The Elements of Typographic Style' 
-                category={['Đồ họa', 'Văn phòng']} 
-                describe='Là một tác phẩm kinh điển của ngành thiết kế. Sách được trình bày đẹp mắt kết hợp với các phần thực hành, lý thuyết, lịch sử, triết lý và sự hiểu biết về các kiểu chữ. ' 
-                indexcard={5} >
-            </CardBook>
-        </ScrollView>
+            <SafeAreaView style={selfstyle.list_book}>
+                <FlatList
+                  data={result_search}
+                  renderItem={({item, index}) => 
+                  <CardBook title={item.title} 
+                  link_img={item.img_link}
+                  pressButton={()=> {handlePress(item.id)}}
+                  category={[item.genre_name]} 
+                  describe={item.describes}
+                  view={item.view}
+                  indexcard={index} />}
+                  keyExtractor={(item) => item.id.toString()}
+                />
+            </SafeAreaView>
         </View>
         
     </View>

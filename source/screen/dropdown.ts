@@ -27,7 +27,7 @@ dropdown: {
     fontWeight: '500'
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: 14,
   },
   iconStyle: {
     width: 20,
@@ -35,7 +35,7 @@ dropdown: {
   },
   inputSearchStyle: {
     height: 40,
-    fontSize: 16,
+    fontSize: 14,
   },
 })
 

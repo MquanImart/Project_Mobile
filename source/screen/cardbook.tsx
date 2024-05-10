@@ -8,27 +8,41 @@ import React from 'react';import {
 } from 'react-native';
 
 type StockBook = {
+    pressButton: Function;
     title: string;
+    link_img: string;
     category: string[];
     describe: string;
+    view: number;
     indexcard: number;
 }
 
-function CardBook({title, category, describe, indexcard}: StockBook): React.JSX.Element {
-  return (
-    <TouchableOpacity style={[styles.container,indexcard%2 === 0?styles.container_color1:styles.container_color2 ]}>
+function CardBook({pressButton, title, link_img, category, describe, view, indexcard}: StockBook, navigation: { navigate: (arg0: string, arg1: { id: any; }) => void; }): React.JSX.Element {
+    
+    const handlePress = () => {
+        pressButton();
+    }
+    return (
+    <TouchableOpacity style={[styles.container,indexcard%2 === 0?styles.container_color1:styles.container_color2 ]} 
+    onPress={handlePress}>
         <View style={[styles.box_img,indexcard%2 === 0?styles.box_img_color1:styles.box_img_color2]}>
-            <ImageBackground style={styles.img} source={require('../Image/book.png')}/>
+            <ImageBackground style={styles.img} source={{ uri: link_img }}/>
         </View>
         <View style={styles.box_content}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}
+            numberOfLines={2} // Số dòng tối đa bạn muốn hiển thị
+            ellipsizeMode='tail'
+            >{title}</Text>
             <View style={styles.category}>
             {category.map((category, index) => (
                 <Text style={[styles.text_category, indexcard%2 === 0?styles.text_category_color1:styles.text_category_color2]} key={index}>{category}</Text>
             ))}
             </View>
             <View style={styles.box_describe}>
-                <Text style={styles.text_describe}>{describe}</Text>
+                <Text style={styles.text_describe}
+                numberOfLines={3} // Số dòng tối đa bạn muốn hiển thị
+                ellipsizeMode='tail' // Thêm dấu "..." ở cuối nếu văn bản quá dài
+                >{describe}</Text>
             </View>
         </View>
     </TouchableOpacity>
@@ -40,7 +54,7 @@ const styles = StyleSheet.create({
         width: '90%',
         height: 120,
         alignSelf: 'center',
-        borderRadius: 30,
+        borderRadius: 20,
         flexDirection: 'row',
         marginVertical: 10,
     },
@@ -51,9 +65,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(103,224,147,0.2)',
     },
     box_img: {
-        width: '32%',
+        width: '20%',
         height: 120,
-        borderRadius: 30,
+        borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -64,11 +78,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#67E093",
     },
     img: {
-        width: '80%',
-        height: '80%',
+        width: '100%',
+        height: '100%',
     },
     box_content: {
-        width: '68%',
+        width: '80%',
         padding: 5,
     },
     title: {
@@ -96,7 +110,7 @@ const styles = StyleSheet.create({
     text_describe: {
         fontSize: 10,
         color: 'black'
-    }
+    },
 });
 
 export default CardBook;
