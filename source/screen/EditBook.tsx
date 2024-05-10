@@ -18,7 +18,8 @@ import { Dropdown } from 'react-native-element-dropdown';
 import dropstyle from './dropdown';
 import { getAllGenre } from '../API/genreAPI';
 import { getDataSearch } from '../API/searchAPI';
-import { postAddBook } from '../API/nxbAPI';
+import { postAddBook, postUpdateBook } from '../API/nxbAPI';
+import { getDataBook } from '../API/detailbookAPI';
 
 type Data = {
     label: string;
@@ -26,7 +27,7 @@ type Data = {
 }
 
 function EditBook({route, navigation}): React.JSX.Element {
-    const { action } = route.params;
+    const { action, idbook } = route.params;
     const [listgenre, setlistgenre] = useState<Data[]>([]);
     const [valuecategory, setValuecategory] = useState<string | null>(null);
     const [isFocuscategory, setIsFocuscategory] = useState(false);
@@ -37,6 +38,7 @@ function EditBook({route, navigation}): React.JSX.Element {
     const [describe, setdescribe] = useState("");
     const [img, setimg] = useState("");
 
+    const [msg, setmsg] = useState("");
     useEffect(() => {
         getDataSearch().then(result => {
             const transformedGenreData: Data[] = result.genre.map((item: { genre_name: any; }, index: number) => ({
@@ -45,15 +47,39 @@ function EditBook({route, navigation}): React.JSX.Element {
             }));
             setlistgenre(transformedGenreData);
         });
-        if (action == "Edit"){
-            console.log("Edit");
+        if (action == "Edit") {
+            getDataBook(idbook).then(async result => {
+                setnamebook(result.title);
+                setauthor(result.author);
+                setdescribe(result.describe);
+                setimg(result.imglink);
+                setValuecategory(result.genre_id.toString());
+                setgenre(result.genre);
+            })
         }
     }, []);
 
-    const HandleAddBook = () => {
-        postAddBook(namebook,genre, author,describe, img).then(result => {
-            console.log(result);
-        })
+    const HandleSaveBook = () => {
+        if (action == "Add"){
+            postAddBook(namebook,genre, author,describe, img).then(result => {
+                console.log(result);
+            })
+        }
+        else if (action == "Edit"){
+            console.log(genre);
+            postUpdateBook(idbook, namebook,genre, author,describe, img).then(result => {
+                if (result){
+                    navigation.navigate("managerbook");
+                }
+                else {
+                    setmsg("Có lỗi xảy ra!");
+                }
+            })
+        }
+    }
+
+    const HandleBack = () => {
+        navigation.goBack();
     }
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
@@ -113,15 +139,18 @@ function EditBook({route, navigation}): React.JSX.Element {
             numberOfLines={8} // Số dòng mặc định hiển thị
             textAlignVertical="top"
             value={describe}
+            spellCheck={false} // Tắt kiểm tra chính tả
+            autoCorrect={false} // Tắt gợi ý tự động sửa lỗi
             onChangeText={(text) => {setdescribe(text);}}/>
         </View>
+        {msg != "" && <Text style={selfstyle.error_msg}>{msg}</Text>}
         <View style={selfstyle.box_button}>
             <TouchableOpacity style={[styles.item_button, selfstyle.size_button]}
-            >
+            onPress={HandleBack}>
                 <Text style={styles.item_textcontent}>Hủy</Text>
             </TouchableOpacity>
             <TouchableOpacity style={[styles.item_button, selfstyle.size_button]}
-            onPress={HandleAddBook}>
+            onPress={HandleSaveBook}>
                 <Text style={styles.item_textcontent}>Lưu</Text>
             </TouchableOpacity>
         </View>
@@ -232,6 +261,10 @@ const selfstyle = StyleSheet.create({
       },
       size_dropdown: {
         width: '60%',
+      },
+      error_msg: {
+        alignSelf: 'center',
+        color: 'red'
       }
 })
 export default EditBook;

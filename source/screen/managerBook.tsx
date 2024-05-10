@@ -27,7 +27,14 @@ function ManagerBook({navigation}): React.JSX.Element {
     }, []);
 
     const handleOpenAdd = () => {
-        navigation.navigate("Editbook", {action: "add"})
+        navigation.navigate("Editbook", {action: "Add"})
+    }
+
+    const handleOpenEdit = (idbook: any) => {
+        navigation.navigate("Editbook", {action: "Edit", idbook: idbook})
+    }
+    const handleHide = (idbook: any) => {
+        
     }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
@@ -48,6 +55,8 @@ function ManagerBook({navigation}): React.JSX.Element {
               link_img={item.img_link}
               category={[item.genre_name]} 
               describe={item.describes}
+              pressEdit={() => {handleOpenEdit(item.id)}}
+              pressHide={() => {handleHide(item.id)}}
               indexcard={index} />}
               keyExtractor={(item) => item.id.toString()}
             />

@@ -41,3 +41,32 @@ export const getData = async () => {
         console.error(error);
         }
   };
+  export const postUpdateBook = async (idbook, title, genre, author, describes, img_link) => {
+    try {
+        const url = `${serverAPI}nxb/update/`;
+        const data = {
+            id: idbook,
+            title: title,
+            genre: genre,
+            author: author,
+            describes: describes,
+            img_link: img_link  
+        };
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+    
+            const json = await response.json();
+                return json;
+            } catch (error) {
+              console.error(error);
+            }
+        } catch (error) {
+        console.error(error);
+        }
+  };

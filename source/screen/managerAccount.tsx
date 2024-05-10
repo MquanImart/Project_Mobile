@@ -240,6 +240,7 @@ const selfstyle = StyleSheet.create({
       },
       error_msg: {
         alignSelf: 'center',
+        color: 'red'
       }
 })
 export default ManagerAccount;
