@@ -56,20 +56,8 @@ function FavoriteBook({navigation}): React.JSX.Element {
       };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <Header/>
-        <TouchableOpacity style={selfstyle.box_img}
-            onPress={handleBackPress}>
-              <ImageBackground style={selfstyle.img} source={require('../Image/left-arrow.png')}/>
-              <Text style={selfstyle.textback}>Quay lại</Text>
-        </TouchableOpacity>  
+        <Header buttonback={true}/>
         <Text style={selfstyle.title}>Sách Yêu Thích</Text>
-        <View style={selfstyle.box_search}>
-            <TouchableOpacity style={[selfstyle.icon_search]}>
-                <ImageBackground style={selfstyle.img_icon} source={require('../Image/find.png')}/>
-            </TouchableOpacity>
-            <TextInput style={selfstyle.input_search}
-                placeholder='Tên sách' placeholderTextColor='#A6A6A6'></TextInput>
-        </View>
         <SafeAreaView style={selfstyle.list_book}>
             <FlatList
               data={data}
@@ -108,59 +96,16 @@ const selfstyle = StyleSheet.create({
         justifyContent: 'center',
     },
     title: {
+        flex: 1,
         fontSize: 25,
         fontWeight: '900',
         paddingHorizontal: 10,
         color: '#06AFAA'
     },
-    box_search: {
-        width: '90%',height: 50,
-        marginVertical: 10,
-        backgroundColor: '#EBEDEF',
-        borderRadius: 50,
-        alignSelf: 'center',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    icon_search: {
-        width: 30,
-        height: '50%'
-    },
-    input_search: {
-        width: '60%',
-    },
-    box_propose: {
-        width:'90%', height: 50,
-        marginVertical: 10,
-        alignSelf: 'center',
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-    },
-    text_propose: {
-        fontSize: 20,
-        fontWeight: '900',
-        color: "#67E093"
-    },
     list_book: {
+        flex: 10,
         width: '100%',
 
     },
-    box_img: {
-        width: '30%',
-        height: 45,
-        padding: 10,
-        flexDirection: 'row'
-      },
-      img: {
-        width: 25,
-        height: 25
-      },
-      textback: {
-        alignSelf: 'center',
-        color: '#06AFAA',
-        fontSize: 16,
-        fontWeight: '500'
-      }
 })
 export default FavoriteBook;

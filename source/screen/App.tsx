@@ -1,5 +1,5 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
+import { DrawerContentScrollView, DrawerItem, createDrawerNavigator } from '@react-navigation/drawer';
+import { NavigationContainer, NavigationContainerRef } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './home';
 import Advanced_search from './Advanced_search';
@@ -15,12 +15,73 @@ import EditBook from './EditBook';
 import FavoriteBook from './favorite_books';
 import ManagerBook from './managerBook';
 import HomeManagerAccount from './homeManagerAcc';
-const Drawer = createDrawerNavigator();
+import { Vibration } from 'react-native';
+import { Text, View } from 'react-native-reanimated/lib/typescript/Animated';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { getRole } from '../API/loginAPI';
+import { getID } from '../API/session';
 
+const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+
 const creen = [
   {label: "Home", component: "Home"},
 ]
+
+type RootStackParamList = {
+  Login: undefined;
+  HomeDrawer: undefined;
+  StackForgotPass: undefined;
+  ResgisterAccount: undefined;
+};
+
+type DrawerParamList = {
+  Home: undefined;
+  Search: undefined;
+  Category: undefined;
+  Profile: undefined;
+  'Manager Book': undefined;
+};
+
+interface AuthContextType {
+  login: () => void;
+  logout: () => void;
+}
+const AuthContext = createContext<AuthContextType | null>(null);
+
+function CustomDrawerContent(props: any) {
+  const authContext = useContext(AuthContext);
+  const [role, setrole] = useState(1);
+  const [roleLoaded, setRoleLoaded] = useState(false);
+  useEffect(() => {
+    getRole().then(result => {
+        if (result != false){
+          setrole(result.role_id);
+        }
+        setRoleLoaded(true);
+    });
+}, []);
+  // Kiểm tra authContext trước khi truy cập thuộc tính logout
+  const handleLogout = () => {
+    if (authContext !== null) {
+      authContext.logout();
+    }
+  };
+
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItem label="Trang Chủ" onPress={() => props.navigation.navigate('Home')} />
+      <DrawerItem label="Tìm kiếm" onPress={() => props.navigation.navigate('Search')} />
+      <DrawerItem label="Thể Loại" onPress={() => props.navigation.navigate('Category')} />
+      <DrawerItem label="Hồ Sơ" onPress={() => props.navigation.navigate('Profile')} />
+      {roleLoaded && role === 2 && <DrawerItem label="Quản lý sách" onPress={() => props.navigation.navigate('Manager Book')} />}
+      <DrawerItem label="Đăng xuất" onPress={handleLogout} />
+    </DrawerContentScrollView>
+  );
+}
+
+
+
 function NXB(){
   return (
       <Stack.Navigator initialRouteName='managerbook' screenOptions={{
@@ -74,17 +135,31 @@ function User(){
       </Stack.Navigator>
   );
 }
-function HomeDrawer(){
+function HomeDrawer() {
+  const [role, setrole] = useState(1);
+  const [roleLoaded, setRoleLoaded] = useState(false);
+  useEffect(() => {
+    getRole().then(result => {
+        if (result != false){
+          setrole(result.role_id);
+        }
+        setRoleLoaded(true);
+    });
+}, []);
   return (
-      <Drawer.Navigator initialRouteName='Home' screenOptions={{
-         headerShown: false,
-      }}>
-        <Drawer.Screen name="Home" component={HomeStack} />
-        <Drawer.Screen name="Search" component={SearchStack} />
-        <Drawer.Screen name="Category" component={GenreStack} />
-        <Drawer.Screen name="Profile" component={User} />
-        <Drawer.Screen name="Manager Book" component={NXB} />
-      </Drawer.Navigator>
+    <Drawer.Navigator
+      initialRouteName="Home"
+      drawerContent={(props) => <CustomDrawerContent {...props} />}
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Drawer.Screen name="Home" component={HomeStack} />
+      <Drawer.Screen name="Search" component={SearchStack} />
+      <Drawer.Screen name="Category" component={GenreStack} />
+      <Drawer.Screen name="Profile" component={User} />
+      {roleLoaded && role === 2 && <Drawer.Screen name="Manager Book" component={NXB} />}
+    </Drawer.Navigator>
   );
 }
 function ForgotPasswordStack(){
@@ -108,17 +183,37 @@ function ResgisterAccount(){
   );
 }
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigationRef = useRef<NavigationContainerRef<RootStackParamList>>(null);
+  
+  const login = () => setIsLoggedIn(true);
+  const logout = () => {
+    setIsLoggedIn(false);
+    // Reset navigation stack to Login screen
+    navigationRef.current?.reset({
+      index: 0,
+      routes: [{ name: 'Login' }],
+    });
+  };
+
+  const authContextValue = {
+    login,
+    logout,
+  };
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName='Login' screenOptions={{
-         headerShown: false,
-      }}>
-        <Stack.Screen name='Login' component={Login} />
-        <Stack.Screen name='HomeDrawer' component={HomeDrawer} />
-        <Stack.Screen name='StackForgotPass' component={ForgotPasswordStack}/>
-        <Stack.Screen name='ResgisterAccount' component={ResgisterAccount}/>
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AuthContext.Provider value={authContextValue}>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator initialRouteName="Login" screenOptions={{
+           headerShown: false,
+        }}>
+          <Stack.Screen name="HomeDrawer" component={HomeDrawer} />
+          <Stack.Screen name="StackForgotPass" component={ForgotPasswordStack} />
+          <Stack.Screen name="ResgisterAccount" component={ResgisterAccount} />
+          <Stack.Screen name="Login" component={Login} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AuthContext.Provider>
   );
 }
 export default App;

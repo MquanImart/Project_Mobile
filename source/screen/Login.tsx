@@ -14,6 +14,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { useNavigation, NavigationProp, ParamListBase } from '@react-navigation/native';
 import { postLogin } from '../API/loginAPI';
 import { ScrollView } from 'react-native-gesture-handler';
+import { StackNavigationProp } from '@react-navigation/stack';
 // Xác định kiểu dữ liệu cho danh sách tham số của navigator
 type RootStackParamList = {
   'HomeDrawer': undefined;
@@ -22,7 +23,7 @@ type RootStackParamList = {
   // ... các screen khác ...
 };
 function Login(): React.JSX.Element {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const [username, setusername]= useState("");
   const [password, setpassword]= useState("");
   const [isTextVisible, setIsTextVisible] = useState(false);
@@ -34,7 +35,7 @@ function Login(): React.JSX.Element {
       if (result === true) {
         setIsTextVisible(false);
         setTextMsg("");
-        navigation.navigate('HomeDrawer'); // Chuyển đến màn hình Home
+        navigation.replace('HomeDrawer'); // Chuyển đến màn hình Home
       } else {
         setIsTextVisible(true);
         setTextMsg("Tên đăng nhập hoặc mật khẩu không đúng");

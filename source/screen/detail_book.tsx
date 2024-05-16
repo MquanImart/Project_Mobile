@@ -16,7 +16,9 @@ import {
 import CardBook from './cardbook'; 
 import Header from './header'
 import Comment from './comment';
-import { getComment, getDataBook } from '../API/detailbookAPI';
+import { getComment, getDataBook, postComment } from '../API/detailbookAPI';
+import addcomment from './addcomment';
+import { addBookLove } from '../API/proposeAPI';
 
 type DetailBook = {
     id: number;
@@ -45,6 +47,10 @@ function DetailBook({route, navigation}): React.JSX.Element {
     const [databook, setdatabook] = useState<DetailBook>();
     const [comments, setcomments] = useState<DataComment[]>([]);
     const { idbook } = route.params;
+
+    const [star, setstar] = useState(0);
+    const [content, setcontent] = useState("");
+    const [msg, setmsg] = useState('');
     useEffect(() => {
         getDataBook(idbook).then(async result => {
             await setdatabook(result);
@@ -54,19 +60,37 @@ function DetailBook({route, navigation}): React.JSX.Element {
         });
     }, []);
 
-    const handleBackPress = () => { 
-        navigation.goBack();
-      };
+    const handlePressStar = (numstar: number) => {
+        setstar(numstar);
+    }
+    const handlePressComment = async () => {
+        await postComment(idbook, content, star).then(result => {
+            if (result){
+                setmsg('');
+                setcontent("");
+                setstar(0);
+                getComment(idbook).then(async result => {
+                    await setcomments(result);
+                });
+            }
+            else {setmsg('Không thể comment!');}
+        })
+    }
+    const handleaddBookLove = () => {
+        addBookLove(idbook).then(result => {
+            console.log(result);
+        })
+    }
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <Header/>
-        <TouchableOpacity style={selfstyle.box_img}
-            onPress={handleBackPress}>
-              <ImageBackground style={selfstyle.img} source={require('../Image/left-arrow.png')}/>
-              <Text style={selfstyle.textback}>Quay lại</Text>
-        </TouchableOpacity>  
+    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
+        <Header buttonback={true}/>
         <View style={selfstyle.container}>
-            <View style={selfstyle.box_title}><Text style={selfstyle.title}>Thông tin sách</Text></View>
+            <View style={selfstyle.box_title}>
+                <Text style={selfstyle.title}>Thông tin sách</Text>
+                <TouchableOpacity onPress={handleaddBookLove}>
+                    <Text style={{color: '#FF6666', fontWeight: '400'}}>+ Yêu Thích</Text>
+                </TouchableOpacity>
+            </View>
             <View style={selfstyle.box_info}>
                 <Text style={selfstyle.name_book}>{databook?.title}</Text>
                 <View style={selfstyle.box_category}>
@@ -92,23 +116,63 @@ function DetailBook({route, navigation}): React.JSX.Element {
                 </View>
             </View>
             <View style={selfstyle.box_title}><Text style={selfstyle.title}>Mô tả</Text></View>
-            <ScrollView style={selfstyle.box_describe}>
+            <View style={selfstyle.box_describe}>
             <Text style={[selfstyle.describe, selfstyle.text_content]}>{databook?.describe}</Text>
-            </ScrollView>
+            </View>
             <View style={selfstyle.box_title}><Text style={selfstyle.title}>Bình luận</Text></View>
             <SafeAreaView style={selfstyle.box_comment}>
-                {comments.length > 0 && <FlatList
-                  data={comments}
-                  renderItem={({item}) => 
-                  <Comment 
-                  user={item.name} 
-                  star={item.score}
-                  content={item.content} />}
-                  keyExtractor={(item) => item.user_id.toString()}
-                />}
+                {comments.length > 0 && 
+                <ScrollView >
+                {comments.map((item, index) => (
+                    <Comment 
+                        key={index}
+                        user={item.name} 
+                        star={item.score}
+                        content={item.content} 
+                    />
+                ))}
+                </ScrollView>}
+                <View style={addcomment.box_addcomment}>
+                    <View style={addcomment.content_comment}>
+                        <TextInput style={addcomment.input_addcomment}
+                        multiline={true} // Cho phép nhiều dòng
+                        numberOfLines={2} // Số dòng mặc định hiển thị
+                        textAlignVertical="top"
+                        value={content}
+                        spellCheck={false} // Tắt kiểm tra chính tả
+                        autoCorrect={false}
+                        onChangeText={(text)=>{setcontent(text)}}/>
+                        <View style={addcomment.boxstar_comment}>
+                            <TouchableOpacity style={addcomment.item_star}
+                                onPress={() => {handlePressStar(1)}}>
+                                <ImageBackground style={addcomment.img_star} source={star>=1?require('../Image/star.png'):require('../Image/star_white.png')}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={addcomment.item_star}
+                                onPress={() => {handlePressStar(2)}}>
+                                <ImageBackground style={addcomment.img_star} source={star>=2?require('../Image/star.png'):require('../Image/star_white.png')}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={addcomment.item_star}
+                                onPress={() => {handlePressStar(3)}}>
+                                <ImageBackground style={addcomment.img_star} source={star>=3?require('../Image/star.png'):require('../Image/star_white.png')}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={addcomment.item_star}
+                                onPress={() => {handlePressStar(4)}}>
+                                <ImageBackground style={addcomment.img_star} source={star>=4?require('../Image/star.png'):require('../Image/star_white.png')}/>
+                            </TouchableOpacity>
+                            <TouchableOpacity style={addcomment.item_star}
+                                onPress={() => {handlePressStar(5)}}>
+                                <ImageBackground style={addcomment.img_star} source={star>=5?require('../Image/star.png'):require('../Image/star_white.png')}/>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <TouchableOpacity style={addcomment.box_submit} onPress={handlePressComment}>
+                        <Text style={addcomment.text_submit}>Bình luận</Text>
+                    </TouchableOpacity>
+                </View>
+                {msg != '' && <Text>{msg}</Text>}
             </SafeAreaView>
         </View>
-    </View>
+    </ScrollView>
   );
 }
 const selfstyle = StyleSheet.create({
@@ -123,6 +187,8 @@ const selfstyle = StyleSheet.create({
         borderBottomColor: '#06AFAA',
         borderBottomWidth: 1,
         marginVertical: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     title:{
         color: 'black',
@@ -194,23 +260,9 @@ const selfstyle = StyleSheet.create({
         height: 30,
     },
     box_comment: {
-
+        height: 'auto',
+        marginBottom: 10,
     },
-    box_img: {
-        width: '30%',
-        height: 45,
-        padding: 10,
-        flexDirection: 'row'
-      },
-      img: {
-        width: 25,
-        height: 25
-      },
-      textback: {
-        alignSelf: 'center',
-        color: '#06AFAA',
-        fontSize: 16,
-        fontWeight: '500'
-      }
+
 })
 export default DetailBook;

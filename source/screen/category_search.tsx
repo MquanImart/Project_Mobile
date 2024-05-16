@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Dropdown } from 'react-native-element-dropdown';
 import {
+  ActivityIndicator,
   FlatList,
   ImageBackground,
   SafeAreaView,
@@ -17,6 +18,7 @@ import dropstyle from './dropdown';
 import Header from './header';
 import { getDataGenre, postSearchGenre } from '../API/searchAPI';
 import { Typebook } from './home';
+import { useFocusEffect } from '@react-navigation/native';
 
 type Data = {
     label: string;
@@ -30,6 +32,8 @@ function CategorySearch({navigation}): React.JSX.Element {
     const flatListRef = useRef<FlatList>(null);
     
     const [datagenre, setdatagenre] = useState<Data[]>([]);
+    const [isloading, setisloading] = useState(false);
+
     useEffect(() => {
       getDataGenre().then(result => {
           const transformedGenreData: Data[] = result.map((item: { genre_name: any; }, index: number) => ({
@@ -42,7 +46,6 @@ function CategorySearch({navigation}): React.JSX.Element {
         setresult_search(result);
       });
     }, []);
-
     const handleGenrePress = async (genre_name: React.SetStateAction<string | null>) => {
       await postSearchGenre(genre_name).then(result => {
         setresult_search(result);
@@ -63,7 +66,7 @@ function CategorySearch({navigation}): React.JSX.Element {
   }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <Header/>
+        <Header buttonback={false}/>
         <View style={selfstyle.box_title}>
             <TouchableOpacity onPress={handleResetPress}>
               <Text style={selfstyle.title_search}>Thể Loại</Text>
@@ -108,12 +111,19 @@ function CategorySearch({navigation}): React.JSX.Element {
               keyExtractor={(item) => item.id.toString()}
             />
         </SafeAreaView>
+        {isloading &&(
+        <View style={selfstyle.box_loading}>
+            <ActivityIndicator
+            size="large" color="#00ff00" />
+        </View>
+        )}
     </View>
   );
 }
 const selfstyle = StyleSheet.create({
 
     box_title: {
+        flex: 1.5,
         width: '90%',
         alignSelf: 'center',
         borderBottomColor: '#06AFAA',
@@ -132,6 +142,7 @@ const selfstyle = StyleSheet.create({
         paddingHorizontal: 10,
     },
     list_book: {
+      flex: 12.5,
         width: '100%',
 
     },
@@ -140,5 +151,12 @@ const selfstyle = StyleSheet.create({
         fontWeight: '800',
         color: "#06AFAA"
       },
+      box_loading:{
+        flex: 12,
+        width: '100%',
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
 })
 export default CategorySearch;

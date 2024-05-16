@@ -13,6 +13,7 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { getID } from '../API/session';
 import { getGenreById } from '../API/userAPI';
 import { resetGenericPassword } from 'react-native-keychain';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type Genre = {
     id: number;
@@ -27,7 +28,7 @@ type RootStackParamList = {
 };
 
 function ChooseInterests(): React.JSX.Element {
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const [listgenre, setlistgenre] = useState<Genre[]>([]);
     const [selectedGenres, setSelectedGenres] = useState<SelectedGenresType>({});
 
@@ -47,7 +48,7 @@ function ChooseInterests(): React.JSX.Element {
     }, []);
 
     const handlePassPress= () => {
-        navigation.navigate('HomeDrawer');
+        navigation.replace('HomeDrawer');
     }
     const handleGenrePress = () => {
         postGenre(selectedGenres).then(result => {
