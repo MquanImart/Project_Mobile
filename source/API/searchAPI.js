@@ -11,7 +11,7 @@ export const getDataSearch = async () => {
       console.error(error);
     }
   };
-export const postSearchAdvanced = async (genre_name, author, sort) => {
+export const postSearchAdvanced = async (text, genre_name, author, sort) => {
     try {
         const url = serverAPI + 'search';
         let sort_vname = null;
@@ -28,6 +28,7 @@ export const postSearchAdvanced = async (genre_name, author, sort) => {
             else {sort_dir = 'ASC'}
         }
         const data = {
+            text: text===""?null:text,
             genre_name: genre_name,
             author: author,
             sort_name: sort_vname,
@@ -68,6 +69,58 @@ export const postSearchGenre = async (genre_name) => {
         
         const data = {
             genre_name: genre_name
+        };
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+    
+            const json = await response.json();
+                return json;
+            } catch (error) {
+              console.error(error);
+            }
+        } catch (error) {
+        console.error(error);
+        }
+  };
+  export const postSearchText = async (text) => {
+    try {
+        const url = serverAPI + 'book/textSearch';
+        
+        const data = {
+            text: text,
+            n: 20
+        };
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+    
+            const json = await response.json();
+                return json;
+            } catch (error) {
+              console.error(error);
+            }
+        } catch (error) {
+        console.error(error);
+        }
+  };
+  export const postSearchImage = async (img) => {
+    try {
+        const url = serverAPI + 'book/imgSearch';
+        
+        const data = {
+            img: img,
+            n: 20
         };
         try {
             const response = await fetch(url, {

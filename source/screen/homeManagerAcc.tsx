@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import HeaderSelf from './header';
+import Header from './header';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { getNameEmail } from '../API/userAPI';
 type RootStackParamList = {
@@ -43,7 +43,7 @@ function HomeManagerAccount(): React.JSX.Element {
   }, []);
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <HeaderSelf/>
+        <Header buttonback={false}/>
         <ImageBackground style={selfstyle.img_background} source={require('../Image/background_user.png')}/>
         <View style={selfstyle.box_item}>
             <View style={selfstyle.box_input}>

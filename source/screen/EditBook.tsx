@@ -83,7 +83,7 @@ function EditBook({route, navigation}): React.JSX.Element {
     }
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
-        <Header/>
+        <Header buttonback={true}/>
         <View style={selfstyle.container}>
             <View style={selfstyle.box_title}>
                 <Text style={selfstyle.title}>Thêm sách</Text>

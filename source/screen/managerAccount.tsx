@@ -110,12 +110,7 @@ function ManagerAccount({navigation}): React.JSX.Element {
       }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <Header/>
-        <TouchableOpacity style={selfstyle.box_img}
-            onPress={handleBackPress}>
-              <ImageBackground style={selfstyle.img} source={require('../Image/left-arrow.png')}/>
-              <Text style={selfstyle.textback}>Quay lại</Text>
-        </TouchableOpacity>  
+        <Header buttonback={true}/>
         <View style={selfstyle.box_item}>
             <View style={selfstyle.box_title}>
                 <Text style={selfstyle.title}>Thông Tin Cá Nhân</Text>
@@ -222,22 +217,6 @@ const selfstyle = StyleSheet.create({
         width: 120,
         height: 50,
     },
-    box_img: {
-        width: '30%',
-        height: 45,
-        padding: 10,
-        flexDirection: 'row'
-      },
-      img: {
-        width: 25,
-        height: 25
-      },
-      textback: {
-        alignSelf: 'center',
-        color: '#06AFAA',
-        fontSize: 16,
-        fontWeight: '500'
-      },
       error_msg: {
         alignSelf: 'center',
         color: 'red'

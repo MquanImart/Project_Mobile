@@ -27,7 +27,7 @@ function ForgotPassword(): React.JSX.Element {
   const [isTextVisible, setIsTextVisible] = useState(false);
   const [textMsg, setTextMsg] = useState("Username");
   const [isTextVisibleotp, setIsTextVisibleotp] = useState(false);
-  const [textMsgotp, setTextMsgotp] = useState("Username");
+  const [textMsgotp, setTextMsgotp] = useState("OTP");
   const [username_verify, setusername_verify] = useState("");
   const handleBackPress = () => { 
     setIsTextVisible(false);

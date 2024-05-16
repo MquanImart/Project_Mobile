@@ -16,7 +16,7 @@ import {
 import ManagerCard from './managerCard'; 
 import Header from './header';
 import { Typebook } from './home';
-import { getData } from '../API/nxbAPI';
+import { getData, postHideBook } from '../API/nxbAPI';
 function ManagerBook({navigation}): React.JSX.Element {
     const [data, setdata] = useState<Typebook[]>([]);
 
@@ -33,12 +33,17 @@ function ManagerBook({navigation}): React.JSX.Element {
     const handleOpenEdit = (idbook: any) => {
         navigation.navigate("Editbook", {action: "Edit", idbook: idbook})
     }
-    const handleHide = (idbook: any) => {
+    const handleHide = async (idbook: any) => {
+        await postHideBook(idbook);
+        
+        setdata((prevData: any[]) => prevData.map(book => 
+            book.id === idbook ? { ...book, active: book.active === 0? 1: 0 } : book
+        ));
         
     }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <Header/>
+        <Header buttonback={false}/>
         <View style={selfstyle.header}>
             <Text style={selfstyle.title}>Quản Lý Sách</Text>
             <TouchableOpacity style={selfstyle.button}
@@ -54,6 +59,7 @@ function ManagerBook({navigation}): React.JSX.Element {
               title={item.title} 
               link_img={item.img_link}
               category={[item.genre_name]} 
+              active={item.active}
               describe={item.describes}
               pressEdit={() => {handleOpenEdit(item.id)}}
               pressHide={() => {handleHide(item.id)}}

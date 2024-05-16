@@ -16,6 +16,9 @@ import CardBook from './cardbook';
 import { getHistory, getHot, getLoveBook, getPropose } from '../API/proposeAPI';
 import HeaderSelf from './header';
 import { selectImage } from '../API/imgbook';
+import { postSearchImage, postSearchText } from '../API/searchAPI';
+import { launchImageLibrary } from 'react-native-image-picker';
+import RNFS from 'react-native-fs';
 export type Typebook = {
     id: number;
     genre_id: number;
@@ -31,10 +34,43 @@ export type Typebook = {
 function Home({navigation}): React.JSX.Element {
     const [listpropose, setlistpropose] = useState<Typebook[]>([]);
     const [focus_propose, setfocus_propose] = useState(1);
-    const [image, setImage] = useState(null);
-    const handleselectImage = async () => {
-        console.log("");
+    const [image, setImage] = useState<string>("");
+    const [text, settext] = useState("");
+
+    const handleSearchText = async () => {
+        postSearchText(text).then(result => {
+            setlistpropose(result);
+        })
     }
+
+    const handleselectImage = async () => {
+        const options = {
+          mediaType: 'photo',
+          quality: 1,
+        };
+    
+        launchImageLibrary(options, async (response) => {
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.errorCode) {
+            console.log('ImagePicker Error: ', response.errorMessage);
+        } else if (response.assets && response.assets.length > 0) {
+            const selectedImage = response.assets[0];
+            const uri = selectedImage.uri || null;
+            setImage(uri);
+            if (uri) {
+                try {
+                    const base64String = await RNFS.readFile(image, 'base64');
+                    postSearchImage(base64String).then(result=>{
+                        setlistpropose(result);
+                    })
+                  } catch (error) {
+                    console.error('Error converting image to base64: ', error);
+                  }
+            }
+          }
+        });
+      };
     useEffect(() => {
         getPropose().then(propose => {
             setlistpropose(propose);
@@ -72,13 +108,15 @@ function Home({navigation}): React.JSX.Element {
     }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <HeaderSelf/>
+        <HeaderSelf buttonback={false} />
         <View style={selfstyle.box_search}>
-            <TouchableOpacity style={[selfstyle.icon_search]}>
+            <TouchableOpacity style={[selfstyle.icon_search]}
+            onPress={handleSearchText}>
                 <ImageBackground style={selfstyle.img_icon} source={require('../Image/find.png')}/>
             </TouchableOpacity>
-            <TextInput style={selfstyle.input_search}
-                placeholder='Tên sách' placeholderTextColor='#A6A6A6'></TextInput>
+            <TextInput style={selfstyle.input_search} value={text}
+            onChangeText={(text)=>{settext(text)}}
+                placeholder='Tên sách' placeholderTextColor='#A6A6A6'/>
             <TouchableOpacity style={selfstyle.icon_search} onPress={handleselectImage}>
                 <ImageBackground style={selfstyle.img_icon} source={require('../Image/camera.png')}/>
             </TouchableOpacity>

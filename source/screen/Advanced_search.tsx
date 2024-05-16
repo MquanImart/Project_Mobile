@@ -17,8 +17,10 @@ import {
   View,
 } from 'react-native';
 import CardBook from './cardbook'; 
-import { getDataSearch, postSearchAdvanced } from '../API/searchAPI';
+import { getDataSearch, postSearchAdvanced, postSearchImage } from '../API/searchAPI';
 import { Typebook } from './home';
+import { launchImageLibrary } from 'react-native-image-picker';
+import RNFS from 'react-native-fs';
 
 type Data = {
     'label': string,
@@ -47,6 +49,8 @@ function Advanced_search({navigation}): React.JSX.Element {
     const [valuesort, setValuesort] = useState<string | null>(null);
     const [isFocussort, setIsFocussort] = useState(false);
 
+    const [image, setImage] = useState<string>("");
+    const [text, settext] = useState("");
     useEffect(() => {
         getDataSearch().then(result => {
             const transformedGenreData: Data[] = result.genre.map((item: { genre_name: any; }, index: number) => ({
@@ -64,7 +68,7 @@ function Advanced_search({navigation}): React.JSX.Element {
     }, []);
 
     const handleSearchPress = () => {
-        postSearchAdvanced(genre, author, valuesort).then(result => {
+        postSearchAdvanced(text, genre, author, valuesort).then(result => {
             setresult_search(result);
         });
     }
@@ -74,23 +78,54 @@ function Advanced_search({navigation}): React.JSX.Element {
         setauthor(null);
         setValueauthor(null);
         setValuesort(null);
+        settext("");
     }
     const handlePress = (id: any) => {
         navigation.navigate("Detail Book", {
             idbook: id,
           });
     }
+    const handleselectImage = async () => {
+        const options = {
+          mediaType: 'photo',
+          quality: 1,
+        };
+    
+        launchImageLibrary(options, async (response) => {
+          if (response.didCancel) {
+            console.log('User cancelled image picker');
+          } else if (response.errorCode) {
+            console.log('ImagePicker Error: ', response.errorMessage);
+        } else if (response.assets && response.assets.length > 0) {
+            const selectedImage = await response.assets[0];
+            const uri = await selectedImage.uri || null;
+            setImage(uri);
+            if (uri) {
+                try {
+                    const base64String = await RNFS.readFile(image, 'base64');
+                    postSearchImage(base64String).then(result=>{
+                        setresult_search(result);
+                    })
+                  } catch (error) {
+                    console.error('Error converting image to base64: ', error);
+                  }
+            }
+          }
+        });
+      };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <Header/>
+        <Header buttonback={false}/>
         <View style={{flex: 1}}>
             <View style={selfstyle.box_search}>  
                 <TouchableOpacity style={[selfstyle.icon_search]}>
                     <ImageBackground style={selfstyle.img_icon} source={require('../Image/find.png')}/>
                 </TouchableOpacity>
-                <TextInput style={selfstyle.input_search}
+                <TextInput style={selfstyle.input_search} value={text}
+                    onChangeText={(text)=>{settext(text)}}
                     placeholder='Tên sách' placeholderTextColor='#A6A6A6'></TextInput>
-                <TouchableOpacity style={selfstyle.icon_search}>
+                <TouchableOpacity style={selfstyle.icon_search}
+                onPress={handleselectImage}>
                     <ImageBackground style={selfstyle.img_icon} source={require('../Image/camera.png')}/>
                 </TouchableOpacity>
             </View>

@@ -63,7 +63,7 @@ function CategorySearch({navigation}): React.JSX.Element {
   }
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <Header/>
+        <Header buttonback={false}/>
         <View style={selfstyle.box_title}>
             <TouchableOpacity onPress={handleResetPress}>
               <Text style={selfstyle.title_search}>Thể Loại</Text>

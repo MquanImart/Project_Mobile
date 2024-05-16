@@ -11,13 +11,14 @@ type StockBook = {
     title: string;
     category: string[];
     describe: string;
+    active: number;
     indexcard: number;
     link_img: string;
     pressEdit: Function;
     pressHide: Function;
 }
 
-function managerCard({title,link_img, category, describe, indexcard, pressEdit, pressHide}: StockBook): React.JSX.Element {
+function managerCard({title,link_img, active, category, describe, indexcard, pressEdit, pressHide}: StockBook): React.JSX.Element {
   const handleOpenEdit = () => {
     pressEdit();
   }
@@ -53,7 +54,7 @@ function managerCard({title,link_img, category, describe, indexcard, pressEdit, 
             </TouchableOpacity>
             <TouchableOpacity style={styles.button}
             onPress={handleHilde}>
-                <ImageBackground style={styles.img_button} source={require('../Image/hidden.png')}/>
+                <ImageBackground style={styles.img_button} source={active==0?require('../Image/eye_nxb.png'):require('../Image/hidden.png')}/>
             </TouchableOpacity>
         </View>
     </View>

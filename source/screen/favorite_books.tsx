@@ -56,12 +56,7 @@ function FavoriteBook({navigation}): React.JSX.Element {
       };
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
-        <Header/>
-        <TouchableOpacity style={selfstyle.box_img}
-            onPress={handleBackPress}>
-              <ImageBackground style={selfstyle.img} source={require('../Image/left-arrow.png')}/>
-              <Text style={selfstyle.textback}>Quay lại</Text>
-        </TouchableOpacity>  
+        <Header buttonback={true}/>
         <Text style={selfstyle.title}>Sách Yêu Thích</Text>
         <View style={selfstyle.box_search}>
             <TouchableOpacity style={[selfstyle.icon_search]}>
@@ -146,21 +141,5 @@ const selfstyle = StyleSheet.create({
         width: '100%',
 
     },
-    box_img: {
-        width: '30%',
-        height: 45,
-        padding: 10,
-        flexDirection: 'row'
-      },
-      img: {
-        width: 25,
-        height: 25
-      },
-      textback: {
-        alignSelf: 'center',
-        color: '#06AFAA',
-        fontSize: 16,
-        fontWeight: '500'
-      }
 })
 export default FavoriteBook;
