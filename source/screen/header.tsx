@@ -36,6 +36,7 @@ function Header({buttonback}): React.JSX.Element {
 
 const selfstyle = StyleSheet.create({
     self_header: {
+        flex: 1,
         width: '90%',
         height: 70,
         flexDirection: 'row',

@@ -62,7 +62,9 @@ function EditBook({route, navigation}): React.JSX.Element {
     const HandleSaveBook = () => {
         if (action == "Add"){
             postAddBook(namebook,genre, author,describe, img).then(result => {
-                console.log(result);
+                if (result){
+                    navigation.navigate("managerbook");
+                }
             })
         }
         else if (action == "Edit"){

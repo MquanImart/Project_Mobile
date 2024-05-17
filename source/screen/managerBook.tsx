@@ -17,6 +17,7 @@ import ManagerCard from './managerCard';
 import Header from './header';
 import { Typebook } from './home';
 import { getData, postHideBook } from '../API/nxbAPI';
+import { useFocusEffect } from '@react-navigation/native';
 function ManagerBook({navigation}): React.JSX.Element {
     const [data, setdata] = useState<Typebook[]>([]);
 
@@ -25,7 +26,11 @@ function ManagerBook({navigation}): React.JSX.Element {
             setdata(result);
         });
     }, []);
-
+    useFocusEffect(() => {
+        getData().then(result => {
+            setdata(result);
+        });
+    });
     const handleOpenAdd = () => {
         navigation.navigate("Editbook", {action: "Add"})
     }
@@ -72,8 +77,8 @@ function ManagerBook({navigation}): React.JSX.Element {
 }
 const selfstyle = StyleSheet.create({
     header: {
+        flex: 1,
         width: '90%',
-        height: 70,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -100,6 +105,7 @@ const selfstyle = StyleSheet.create({
         color: "#67E093"
     },
     list_book: {
+        flex: 10,
         width: '100%',
     },
     button: {

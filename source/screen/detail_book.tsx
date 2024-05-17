@@ -18,6 +18,7 @@ import Header from './header'
 import Comment from './comment';
 import { getComment, getDataBook, postComment } from '../API/detailbookAPI';
 import addcomment from './addcomment';
+import { addBookLove } from '../API/proposeAPI';
 
 type DetailBook = {
     id: number;
@@ -75,13 +76,20 @@ function DetailBook({route, navigation}): React.JSX.Element {
             else {setmsg('Không thể comment!');}
         })
     }
+    const handleaddBookLove = () => {
+        addBookLove(idbook).then(result => {
+            console.log(result);
+        })
+    }
   return (
     <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
         <Header buttonback={true}/>
         <View style={selfstyle.container}>
             <View style={selfstyle.box_title}>
                 <Text style={selfstyle.title}>Thông tin sách</Text>
-                <TouchableOpacity><Text style={{color: '#FF6666', fontWeight: '400'}}>+ Yêu Thích</Text></TouchableOpacity>
+                <TouchableOpacity onPress={handleaddBookLove}>
+                    <Text style={{color: '#FF6666', fontWeight: '400'}}>+ Yêu Thích</Text>
+                </TouchableOpacity>
             </View>
             <View style={selfstyle.box_info}>
                 <Text style={selfstyle.name_book}>{databook?.title}</Text>

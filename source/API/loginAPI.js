@@ -1,4 +1,4 @@
-export const serverAPI = 'http://192.168.1.71:3000/';
+export const serverAPI = 'http://172.20.10.2:3000/';
 import { getID, storeID } from "./session";
 const postAPI = async (url, data) => {
     try {
@@ -7,7 +7,7 @@ const postAPI = async (url, data) => {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(data) 
         });
 
         const json = await response.json();
@@ -112,4 +112,16 @@ export const postLogin = async (username, password) => {
           console.error(error);
         }
         return false;
+  };
+  export const getRole = async () => {
+    try {
+        const id_user = await getID();
+      const response = await fetch(
+        `${serverAPI}login/getRole/${id_user}`,
+      );
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      console.error(error);
+    }
   };

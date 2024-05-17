@@ -111,7 +111,7 @@ function ManagerAccount({navigation}): React.JSX.Element {
   return (
     <View style={{flex: 1, backgroundColor: '#fff'}}>
         <Header buttonback={true}/>
-        <View style={selfstyle.box_item}>
+        <View style={[selfstyle.box_item, {flex: 8}]}>
             <View style={selfstyle.box_title}>
                 <Text style={selfstyle.title}>Thông Tin Cá Nhân</Text>
             </View>
@@ -146,7 +146,7 @@ function ManagerAccount({navigation}): React.JSX.Element {
                 onChangeText={(text) => {handleChangeText(text,"gender");}}/>
             </View>
         </View>
-        <View style={selfstyle.box_item}>
+        <View style={[selfstyle.box_item, {flex: 4}]}>
             <View style={selfstyle.box_title}>
                 <Text style={selfstyle.title}>Thông Tin Tài Khoản</Text>
             </View>
@@ -209,6 +209,7 @@ const selfstyle = StyleSheet.create({
         padding: 0,
     },
     box_button: {
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginVertical: 20,

@@ -56,23 +56,23 @@ function HomeManagerAccount(): React.JSX.Element {
             </View>
         </View>
         <View style={selfstyle.box_homeaccount}>
-        <View style={selfstyle.box_item_button}>
-          <TouchableOpacity style={selfstyle.box_button}
-            onPress={handleManagerAccPress}>
-              <Text style={selfstyle.text_boxbutton}>Quản lý tài khoản</Text>
-              <ImageBackground style={selfstyle.img_icon} source={require('../Image/setting.png')}/>
-          </TouchableOpacity>
-          <TouchableOpacity style={selfstyle.box_button}
-          onPress={handleChooseIntPress}>
-              <Text style={selfstyle.text_boxbutton}>Thay đổi thể loại yêu thích</Text>
-              <ImageBackground style={selfstyle.img_icon} source={require('../Image/genre.png')}/>
-          </TouchableOpacity>
-          <TouchableOpacity style={selfstyle.box_button}
-          onPress={handleFavPress}>
-              <Text style={selfstyle.text_boxbutton}>Sách đã yêu thích</Text>
-              <ImageBackground style={selfstyle.img_icon} source={require('../Image/heart.png')}/>
-          </TouchableOpacity>
-        </View>
+          <View style={selfstyle.box_item_button}>
+            <TouchableOpacity style={selfstyle.box_button}
+              onPress={handleManagerAccPress}>
+                <Text style={selfstyle.text_boxbutton}>Quản lý tài khoản</Text>
+                <ImageBackground style={selfstyle.img_icon} source={require('../Image/setting.png')}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={selfstyle.box_button}
+            onPress={handleChooseIntPress}>
+                <Text style={selfstyle.text_boxbutton}>Thay đổi thể loại yêu thích</Text>
+                <ImageBackground style={selfstyle.img_icon} source={require('../Image/genre.png')}/>
+            </TouchableOpacity>
+            <TouchableOpacity style={selfstyle.box_button}
+            onPress={handleFavPress}>
+                <Text style={selfstyle.text_boxbutton}>Sách đã yêu thích</Text>
+                <ImageBackground style={selfstyle.img_icon} source={require('../Image/heart.png')}/>
+            </TouchableOpacity>
+          </View>
         </View>
     </View>
   );
@@ -84,13 +84,15 @@ const selfstyle = StyleSheet.create({
     marginVertical: 10,
   },
   box_homeaccount: {
+    flex: 5,
     width: '100%',
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
 
   },
   box_item: {
+    flex: 2,
     width:'90%',
     alignSelf: 'center'
   },
@@ -118,6 +120,7 @@ const selfstyle = StyleSheet.create({
     height: 20,
   },
   img_background: {
+    flex: 3,
     width: 200,
     height: 200,
     alignSelf: 'center',

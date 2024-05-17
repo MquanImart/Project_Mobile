@@ -17,10 +17,13 @@ import ManagerBook from './managerBook';
 import HomeManagerAccount from './homeManagerAcc';
 import { Vibration } from 'react-native';
 import { Text, View } from 'react-native-reanimated/lib/typescript/Animated';
-import { createContext, useContext, useRef, useState } from 'react';
+import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { getRole } from '../API/loginAPI';
+import { getID } from '../API/session';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+
 const creen = [
   {label: "Home", component: "Home"},
 ]
@@ -48,7 +51,16 @@ const AuthContext = createContext<AuthContextType | null>(null);
 
 function CustomDrawerContent(props: any) {
   const authContext = useContext(AuthContext);
-  
+  const [role, setrole] = useState(1);
+  const [roleLoaded, setRoleLoaded] = useState(false);
+  useEffect(() => {
+    getRole().then(result => {
+        if (result != false){
+          setrole(result.role_id);
+        }
+        setRoleLoaded(true);
+    });
+}, []);
   // Kiểm tra authContext trước khi truy cập thuộc tính logout
   const handleLogout = () => {
     if (authContext !== null) {
@@ -58,12 +70,12 @@ function CustomDrawerContent(props: any) {
 
   return (
     <DrawerContentScrollView {...props}>
-      <DrawerItem label="Home" onPress={() => props.navigation.navigate('Home')} />
-      <DrawerItem label="Search" onPress={() => props.navigation.navigate('Search')} />
-      <DrawerItem label="Category" onPress={() => props.navigation.navigate('Category')} />
-      <DrawerItem label="Profile" onPress={() => props.navigation.navigate('Profile')} />
-      <DrawerItem label="Manager Book" onPress={() => props.navigation.navigate('Manager Book')} />
-      <DrawerItem label="Logout" onPress={handleLogout} />
+      <DrawerItem label="Trang Chủ" onPress={() => props.navigation.navigate('Home')} />
+      <DrawerItem label="Tìm kiếm" onPress={() => props.navigation.navigate('Search')} />
+      <DrawerItem label="Thể Loại" onPress={() => props.navigation.navigate('Category')} />
+      <DrawerItem label="Hồ Sơ" onPress={() => props.navigation.navigate('Profile')} />
+      {roleLoaded && role === 2 && <DrawerItem label="Quản lý sách" onPress={() => props.navigation.navigate('Manager Book')} />}
+      <DrawerItem label="Đăng xuất" onPress={handleLogout} />
     </DrawerContentScrollView>
   );
 }
@@ -124,6 +136,16 @@ function User(){
   );
 }
 function HomeDrawer() {
+  const [role, setrole] = useState(1);
+  const [roleLoaded, setRoleLoaded] = useState(false);
+  useEffect(() => {
+    getRole().then(result => {
+        if (result != false){
+          setrole(result.role_id);
+        }
+        setRoleLoaded(true);
+    });
+}, []);
   return (
     <Drawer.Navigator
       initialRouteName="Home"
@@ -136,7 +158,7 @@ function HomeDrawer() {
       <Drawer.Screen name="Search" component={SearchStack} />
       <Drawer.Screen name="Category" component={GenreStack} />
       <Drawer.Screen name="Profile" component={User} />
-      <Drawer.Screen name="Manager Book" component={NXB} />
+      {roleLoaded && role === 2 && <Drawer.Screen name="Manager Book" component={NXB} />}
     </Drawer.Navigator>
   );
 }

@@ -49,10 +49,35 @@ export const getPropose = async () => {
   };
   export const deleteBookLove = async (id_book) => {
     try {
-        console.log(id_book);
         const id_user = await getID();
-        console.log(id_user);
         const url = serverAPI + 'propose/deletelovebook';
+        
+        const data = {
+          id_user: id_user,
+          id_book: id_book
+        };
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+    
+            const json = await response.json();
+                return json === true;
+            } catch (error) {
+              console.error(error);
+            }
+        } catch (error) {
+        console.error(error);
+        }
+  };
+  export const addBookLove = async (id_book) => {
+    try {
+        const id_user = await getID();
+        const url = serverAPI + 'propose/addbook';
         
         const data = {
           id_user: id_user,
