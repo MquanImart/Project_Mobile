@@ -40,7 +40,8 @@ type DataComment = {
     book_id: number,
     user_id: number,
     content: string,
-    comment_date: string
+    comment_date: string,
+    sentiment: number;
 }
 
 function DetailBook({route, navigation}): React.JSX.Element {
@@ -129,6 +130,7 @@ function DetailBook({route, navigation}): React.JSX.Element {
                         user={item.name} 
                         star={item.score}
                         content={item.content} 
+                        sentiment={item.sentiment}
                     />
                 ))}
                 </ScrollView>}
