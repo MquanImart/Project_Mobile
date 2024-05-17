@@ -50,7 +50,8 @@ function Resgister(): React.JSX.Element {
 
     const [date, setDate] = useState(new Date());
     const [open, setOpen] = useState(false);
-
+    const [msg, setmsg] = useState("");
+    const [isPasssecure, setIsPasssecure] = useState(true);
     const data:Selected[] = [
         { label: 'Nam', value: '1' },
         { label: 'Nữ', value: '2' },
@@ -61,12 +62,16 @@ function Resgister(): React.JSX.Element {
         { label: 'Nhà Xuất Bản', value: '2' },
       ];
 
+    const handleLoginPress = () => {
+        navigation.navigate("Login");
+    }
     const handleResgisterPress = () => {
         postResgister(name, email, phone, dob, valuegender, username, password, enterpass, valuerole).then(result => {
           if (result === true) {
+            setmsg("");
             navigation.navigate('ChooseInterests');
           } else {
-            setusername("Sai mk");
+            setmsg("Sai mật khẩu");
           }
       })
       .catch(error => {
@@ -160,15 +165,16 @@ function Resgister(): React.JSX.Element {
                         <View style={styles.item_groupinput}>
                             <Text style={[styles.item_textlabel, selfstyles.box_label]}>Mật khẩu: </Text>
                             <TextInput style={[styles.item_textlabel, selfstyles.box_input, selfstyles.borderinput]}
-                            value={password}
+                            value={password} secureTextEntry={isPasssecure}
                             onChangeText={(text) => {setpassword(text);}} />
                         </View>
                         <View style={styles.item_groupinput}>
                             <Text style={[styles.item_textlabel, selfstyles.box_label]}>Nhập lại mật khẩu: </Text>
                             <TextInput style={[styles.item_textlabel, selfstyles.box_input, selfstyles.borderinput]}
-                            value={enterpass}
+                            value={enterpass} secureTextEntry={isPasssecure}
                             onChangeText={(text) => {setenterpass(text);}} />
                         </View>
+                        {msg != "" && (<Text style={{alignSelf: 'center', color: "#fff"}}>{msg}</Text>)}
                         <View style={styles.item_groupinput}>
                             <Text style={[styles.item_textlabel, selfstyles.box_label]}>Vai trò của bạn: </Text>
                             <Dropdown
@@ -198,8 +204,8 @@ function Resgister(): React.JSX.Element {
                             <Text style={styles.item_textcontent}>Đăng ký</Text>
                         </TouchableOpacity>
                         <View style={[styles.box_item, {flexDirection: 'row'}]}>
-                            <Text style={styles.item_textcontent}>Bạn đã có tài khoản? </Text>
-                            <TouchableHighlight>
+                            <Text style={styles.item_textcontent} >Bạn đã có tài khoản? </Text>
+                            <TouchableHighlight onPress={handleLoginPress}>
                             <Text style={styles.item_texthref}>Đăng nhập</Text>
                             </TouchableHighlight>
                         </View>
@@ -235,7 +241,7 @@ const selfstyles = StyleSheet.create({
     box_date: {
         width: '50%',
         height: 40,
-        backgroundColor: '#fff',
+        backgroundColor: '#CCFFCC',
         justifyContent: 'center',
         alignItems: 'center'
     }

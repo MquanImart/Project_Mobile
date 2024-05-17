@@ -195,6 +195,7 @@ function ForgotPasswordStack(){
       }}>
         <Stack.Screen name='Forgot Password' component={ForgotPassword} />
         <Stack.Screen name='Reset Password' component={ResetPassword} />
+        <Stack.Screen name='Resgister' component={Resgister} />
       </Stack.Navigator>
   );
 }
