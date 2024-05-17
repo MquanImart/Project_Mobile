@@ -46,6 +46,7 @@ function Home({navigation}): React.JSX.Element {
             setlistpropose(result);
         })
         setisloading(false);
+        setfocus_propose(1);
     }
 
     const handleselectImage = async () => {
@@ -208,14 +209,16 @@ const selfstyle = StyleSheet.create({
     },
     box_search: {
         flex: 1,
-        width: '90%',height: 50,
+        width: '90%',
         marginVertical: 10,
         backgroundColor: '#EBEDEF',
         borderRadius: 50,
         alignSelf: 'center',
         justifyContent: 'space-around',
         alignItems: 'center',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        minHeight: 50, 
+        maxHeight: 50,
     },
     icon_search: {
         width: 30,

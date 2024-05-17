@@ -15,9 +15,9 @@ import EditBook from './EditBook';
 import FavoriteBook from './favorite_books';
 import ManagerBook from './managerBook';
 import HomeManagerAccount from './homeManagerAcc';
-import { Vibration } from 'react-native';
+import { ImageBackground, StyleSheet, Vibration } from 'react-native';
 import { Text, View } from 'react-native-reanimated/lib/typescript/Animated';
-import { createContext, useContext, useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { getRole } from '../API/loginAPI';
 import { getID } from '../API/session';
 
@@ -70,12 +70,38 @@ function CustomDrawerContent(props: any) {
 
   return (
     <DrawerContentScrollView {...props}>
-      <DrawerItem label="Trang Chủ" onPress={() => props.navigation.navigate('Home')} />
-      <DrawerItem label="Tìm kiếm" onPress={() => props.navigation.navigate('Search')} />
-      <DrawerItem label="Thể Loại" onPress={() => props.navigation.navigate('Category')} />
-      <DrawerItem label="Hồ Sơ" onPress={() => props.navigation.navigate('Profile')} />
-      {roleLoaded && role === 2 && <DrawerItem label="Quản lý sách" onPress={() => props.navigation.navigate('Manager Book')} />}
-      <DrawerItem label="Đăng xuất" onPress={handleLogout} />
+      <DrawerItem
+        label="Trang Chủ"
+        onPress={() => props.navigation.navigate('Home')}
+        icon={() => <ImageBackground style={selfstyle.icon_menu} source={require('../Image_Menu/home.png')}/>} 
+      />
+      <DrawerItem
+        label="Tìm kiếm"
+        onPress={() => props.navigation.navigate('Search')}
+        icon={() => <ImageBackground style={selfstyle.icon_menu} source={require('../Image_Menu/search.png')}/>} 
+      />
+      <DrawerItem
+        label="Thể Loại"
+        onPress={() => props.navigation.navigate('Category')}
+        icon={() => <ImageBackground style={selfstyle.icon_menu} source={require('../Image_Menu/category.png')}/>}
+      />
+      <DrawerItem
+        label="Hồ Sơ"
+        onPress={() => props.navigation.navigate('Profile')}
+        icon={() => <ImageBackground style={selfstyle.icon_menu} source={require('../Image_Menu/profile-user.png')}/>} 
+      />
+      {roleLoaded && role === 2 && (
+        <DrawerItem
+          label="Quản lý sách"
+          onPress={() => props.navigation.navigate('Manager Book')}
+          icon={() => <ImageBackground style={selfstyle.icon_menu} source={require('../Image_Menu/book.png')}/>} 
+        />
+      )}
+      <DrawerItem
+        label="Đăng xuất"
+        onPress={handleLogout}
+        icon={() => <ImageBackground style={selfstyle.icon_menu} source={require('../Image_Menu/logout.png')}/>} 
+      />
     </DrawerContentScrollView>
   );
 }
@@ -216,4 +242,11 @@ function App() {
     </AuthContext.Provider>
   );
 }
+
+const selfstyle = StyleSheet.create({
+    icon_menu: {
+      width: 20,
+      height: 20,
+    }
+})
 export default App;

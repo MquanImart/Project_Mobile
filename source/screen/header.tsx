@@ -42,7 +42,9 @@ const selfstyle = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        minHeight: 70,
+        maxHeight: 70,
     },
     button_icon: {
         width: 30,

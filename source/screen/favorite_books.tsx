@@ -63,6 +63,7 @@ function FavoriteBook({navigation}): React.JSX.Element {
               data={data}
               renderItem={({item, index}) => 
               <FavoriteCard title={item.title} 
+              link_img={item.img_link}
               category={item.genre_name} 
               describe={item.describes} 
               indexcard={index} 
