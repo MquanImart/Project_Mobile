@@ -20,6 +20,8 @@ import { Dropdown } from 'react-native-element-dropdown';
 import dropstyle from './dropdown';
 import { postResgister } from '../API/loginAPI';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
+import DatePicker from 'react-native-date-picker';
+import formatDate from '../API/date';
 
 type Selected = {
     label: string;
@@ -36,7 +38,7 @@ function Resgister(): React.JSX.Element {
     const [name, setname] = useState("");
     const [email, setemail] = useState("");
     const [phone, setphone] = useState("");
-    const [dob, setdob] = useState("");
+    const [dob, setdob] = useState("Open");
     const [valuegender, setValuegender] = useState<string | null>(null);
     const [isFocus, setIsFocus] = useState(false);
 
@@ -45,6 +47,9 @@ function Resgister(): React.JSX.Element {
     const [enterpass, setenterpass] = useState("");
     const [valuerole, setValuerole] = useState<string | null>(null);
     const [isFocusrole, setIsFocusrole] = useState(false);
+
+    const [date, setDate] = useState(new Date());
+    const [open, setOpen] = useState(false);
 
     const data:Selected[] = [
         { label: 'Nam', value: '1' },
@@ -104,9 +109,21 @@ function Resgister(): React.JSX.Element {
                         </View>
                         <View style={styles.item_groupinput}>
                             <Text style={[styles.item_textlabel, selfstyles.box_label]}>Ngày Sinh: </Text>
-                            <TextInput style={[styles.item_textlabel, selfstyles.box_input, selfstyles.borderinput]}
-                             value={dob}
-                             onChangeText={(text) => {setdob(text);}}/>
+                             <TouchableOpacity style={selfstyles.box_date} onPress={() => setOpen(true)}><Text>{dob}</Text></TouchableOpacity>
+                              <DatePicker
+                                  modal
+                                  mode="date"
+                                  open={open}
+                                  date={date}
+                                  onConfirm={(date) => {
+                                    setOpen(false);
+                                    let stringdate = formatDate(date);
+                                    setdob(stringdate);
+                                  }}
+                                  onCancel={() => {
+                                    setOpen(false);
+                                  }}
+                                />
                         </View>
                         <View style={styles.item_groupinput}>
                             <Text style={[styles.item_textlabel, selfstyles.box_label]}>Giới tính: </Text>
@@ -214,6 +231,13 @@ const selfstyles = StyleSheet.create({
     },
     box_selected: {
         width: 150,
+    },
+    box_date: {
+        width: '50%',
+        height: 40,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
 export default Resgister;

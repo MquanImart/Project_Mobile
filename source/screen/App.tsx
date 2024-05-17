@@ -3,7 +3,7 @@ import { NavigationContainer, NavigationContainerRef } from '@react-navigation/n
 import { createStackNavigator } from '@react-navigation/stack';
 import Home from './home';
 import Advanced_search from './Advanced_search';
-import Categorysearch from './category_search';
+import Categorysearch from './Category_search';
 import ManagerAccount from './managerAccount'
 import Login from './Login';
 import ForgotPassword from './ForgotPassword';

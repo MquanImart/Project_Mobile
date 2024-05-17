@@ -14,6 +14,8 @@ import {
 import CardBook from './cardbook'; 
 import Header from './header';
 import { getInfo, getUsername, updateInfo } from '../API/userAPI';
+import DatePicker from 'react-native-date-picker';
+import formatDate from '../API/date';
 
 type InfoUser = {
     id: number,
@@ -40,6 +42,9 @@ function ManagerAccount({navigation}): React.JSX.Element {
             avatar: '',
           }
     );
+    const [date, setDate] = useState(new Date());
+    const [open, setOpen] = useState(false);
+    
     const [username, setusername] = useState('');
     const handleBackPress = () => { 
         navigation.goBack();
@@ -135,9 +140,23 @@ function ManagerAccount({navigation}): React.JSX.Element {
             </View>
             <View style={selfstyle.box_input}>
                 <Text style={selfstyle.text_conntet}>Ngày sinh: </Text>
-                <TextInput style={[selfstyle.text_conntet, selfstyle.input]} 
-                value={info?.dob} editable={editable}
-                onChangeText={(text) => {handleChangeText(text,"dob");}}/>
+                <TouchableOpacity style={selfstyle.box_date} onPress={() => setOpen(true)}><Text style={{color: 'black'}}>{info.dob}</Text></TouchableOpacity>
+                <DatePicker
+                  modal
+                  mode="date"
+                  open={open}
+                  date={date}
+                  onConfirm={(date) => {
+                    if (editable){  
+                        let stringdate = formatDate(date);
+                        handleChangeText(stringdate,"dob");
+                    }
+                    setOpen(false);
+                  }}
+                  onCancel={() => {
+                    setOpen(false);
+                  }}
+                />
             </View>
             <View style={selfstyle.box_input}>
                 <Text style={selfstyle.text_conntet}>Giới Tính: </Text>
@@ -221,6 +240,13 @@ const selfstyle = StyleSheet.create({
       error_msg: {
         alignSelf: 'center',
         color: 'red'
-      }
+      },
+      box_date: {
+        width: '65%',
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        alignSelf: 'flex-start'
+    }
 })
 export default ManagerAccount;

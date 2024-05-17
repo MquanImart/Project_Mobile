@@ -151,12 +151,12 @@ function Home({navigation}): React.JSX.Element {
                 <Text style={[selfstyle.text_propose, focus_propose == 4?{color: '#06AFAA'}:{}]}>Yêu Thích</Text>
                 </TouchableOpacity>
         </View>
-        {listpropose.length <= 0 &&(
+        {isloading == false && listpropose.length <= 0 &&(
         <View style={selfstyle.msg}>
             <Text style={selfstyle.text_msg}>Không tìm thấy sách</Text>
         </View>
-        )}
-        {isloading == false && listpropose.length > 0 &&(<SafeAreaView style={selfstyle.list_book}>
+        )} 
+        {isloading == false && (<SafeAreaView style={selfstyle.list_book}>
             <FlatList
               data={listpropose}
               renderItem={({item, index}) => 
