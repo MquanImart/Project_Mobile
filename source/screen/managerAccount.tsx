@@ -49,7 +49,7 @@ function ManagerAccount({navigation}): React.JSX.Element {
     const handleBackPress = () => { 
         navigation.goBack();
       };
-      useEffect(() => {
+    useEffect(() => {
         getInfo().then(async result => {
             await setinfo(result[0]);
         });
@@ -65,7 +65,7 @@ function ManagerAccount({navigation}): React.JSX.Element {
             getInfo().then(async result => {
                 await setinfo(result[0]);
             });
-            setgender(info.gender==1?"nam":"Nữ");
+            setgender(info.gender==0?"Nữ":"nam");
             getUsername().then(async result => {
                 await setusername(result[0].username);
             });
@@ -114,7 +114,7 @@ function ManagerAccount({navigation}): React.JSX.Element {
         })
       }
   return (
-    <View style={{flex: 1, backgroundColor: '#fff'}}>
+    <ScrollView style={{flex: 1, backgroundColor: '#fff'}}>
         <Header buttonback={true}/>
         <View style={[selfstyle.box_item, {flex: 8}]}>
             <View style={selfstyle.box_title}>
@@ -189,7 +189,7 @@ function ManagerAccount({navigation}): React.JSX.Element {
                 <Text style={styles.item_textcontent}>Lưu</Text>
             </TouchableOpacity>
         </View>
-    </View>
+    </ScrollView>
   );
 }
 const selfstyle = StyleSheet.create({
