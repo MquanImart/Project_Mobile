@@ -11,7 +11,7 @@ import React from 'react';import {
 function Header({buttonback}): React.JSX.Element {
     const navigation = useNavigation();
     const handlePress = () => {
-        navigation.navigate("Home");
+        navigation.navigate("homescreen");
     }
     const handleBackPress = () => { 
         navigation.goBack();

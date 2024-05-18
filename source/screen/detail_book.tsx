@@ -72,6 +72,9 @@ function DetailBook({route, navigation}): React.JSX.Element {
                 setstar(0);
                 getComment(idbook).then(async result => {
                     await setcomments(result);
+                getDataBook(idbook).then(async result => {
+                    await setdatabook(result);
+                });
                 });
             }
             else {setmsg('Không thể comment!');}
@@ -79,7 +82,11 @@ function DetailBook({route, navigation}): React.JSX.Element {
     }
     const handleaddBookLove = () => {
         addBookLove(idbook).then(result => {
-            console.log(result);
+            if (result){
+                getDataBook(idbook).then(async result => {
+                    await setdatabook(result);
+                });
+            }
         })
     }
   return (

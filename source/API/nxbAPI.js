@@ -15,6 +15,7 @@ export const getData = async () => {
   export const postAddBook = async (title, genre, author, describes, img_link) => {
     try {
         const id_user = await getID();
+        console.log(genre)
         const url = `${serverAPI}nxb/add/${id_user}`;
         const data = {
             title: title,

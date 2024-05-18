@@ -46,6 +46,10 @@ function EditBook({route, navigation}): React.JSX.Element {
                 value: (index + 1).toString(),
             }));
             setlistgenre(transformedGenreData);
+            if (transformedGenreData.length > 0) {
+                setValuecategory(transformedGenreData[0].value);
+                setgenre(transformedGenreData[0].label);
+            }
         });
         if (action == "Edit") {
             getDataBook(idbook).then(async result => {
